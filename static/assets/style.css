@@ -184,3 +184,5 @@ blockquote{margin:40px 0;padding:28px 32px;border-radius:var(--radius);backgroun
   .grid,.grid-2,.pillar-grid,.footer-grid{grid-template-columns:1fr}
   blockquote{font-size:1.35rem;padding:22px 24px}
 }
+.faq{margin-top:48px;padding-top:8px;border-top:1px solid var(--line)}
+.faq h3{color:var(--ink)}

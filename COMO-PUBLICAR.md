@@ -15,9 +15,22 @@ Crie um arquivo em `content/articles/AAAA-MM-DD-slug.json`:
   "tag": "Motivação | Propósito | Superação | Desenvolvimento pessoal",
   "date": "AAAA-MM-DD",
   "quote": "Frase de destaque curta (até ~60 caracteres), aparece na capa do card.",
-  "body": "<p>...</p><h2>...</h2><h3>...</h3><blockquote>...</blockquote>"
+  "keyword": "palavra-chave principal de cauda longa (não aparece no site, serve de controle)",
+  "body": "<p>...</p><h2>...</h2><h3>...</h3><blockquote>...</blockquote>",
+  "faq": [{"q": "Pergunta que as pessoas fazem no Google?", "a": "Resposta direta de 1 a 3 frases."}]
 }
 ```
+
+`faq` é opcional (3 perguntas recomendadas) e gera a seção "Perguntas frequentes" e a marcação FAQPage para o Google.
+`updated` (AAAA-MM-DD) é opcional e indica a data da última revisão.
+
+## Regras de SEO para cada artigo
+
+- Uma palavra-chave principal de cauda longa por artigo, sem repetir a de outro artigo.
+- A palavra-chave aparece no `title` (de preferência no início), na `desc`, no primeiro parágrafo (em <strong>), em pelo menos um <h2> e, se possível, no `slug`.
+- `title` com até ~65 caracteres; `desc` com até ~155 caracteres.
+- 1 ou 2 links internos no corpo para artigos relacionados (`<a href="/blog/slug/">texto descritivo</a>`).
+- Os artigos relacionados no fim da página priorizam o mesmo tema automaticamente.
 
 O tempo de leitura e a cor da capa são calculados sozinhos. O link do guia
 "O labirinto do propósito" pode ser inserido no corpo com o texto `EBOOK_URL` no href.

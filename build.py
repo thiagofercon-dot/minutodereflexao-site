@@ -232,12 +232,18 @@ def build():
         "Artigos sobre motivação, propósito, superação e desenvolvimento pessoal do Minuto de Reflexão.", blog, "blog"))
 
     for i, a in enumerate(ARTICLES):
-        others = [x for x in ARTICLES if x is not a][:2]
+        rest = [x for x in ARTICLES if x is not a]
+        others = ([x for x in rest if x["tag"] == a["tag"]] + [x for x in rest if x["tag"] != a["tag"]])[:2]
         body_html = a["body"].replace("EBOOK_URL", EBOOK)
+        faq = a.get("faq") or []
+        faq_html = ""
+        if faq:
+            faq_html = '<section class="faq">\n<h2>Perguntas frequentes</h2>\n' + "\n".join(
+                f"<h3>{html.escape(f['q'])}</h3>\n<p>{html.escape(f['a'])}</p>" for f in faq) + "\n</section>"
         ld = {
             "@context": "https://schema.org", "@type": "BlogPosting",
             "headline": a["title"], "description": a["desc"],
-            "datePublished": a["date"], "dateModified": a["date"],
+            "datePublished": a["date"], "dateModified": a.get("updated", a["date"]),
             "inLanguage": "pt-BR",
             "author": {"@type": "Organization", "name": BRAND},
             "publisher": {"@type": "Organization", "name": BRAND,
@@ -256,6 +262,7 @@ def build():
   </header>
   <div class="wrap narrow post-body">
     {body_html}
+    {faq_html}
     <div class="share">
       <p class="mono">Gostou? Compartilhe esta reflexão</p>
       <div class="share-links">
@@ -274,7 +281,8 @@ def build():
 </section>
 """
         write(f"blog/{a['slug']}/index.html", page(f"/blog/{a['slug']}/", a["title"], a["desc"], art, "blog", "article",
-              f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>'))
+              f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>'
+              + (f'\n<script type="application/ld+json">{json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": f["q"], "acceptedAnswer": {"@type": "Answer", "text": f["a"]}} for f in faq]}, ensure_ascii=False)}</script>' if faq else "")))
 
     sobre = f"""
 <section class="page-hero">
