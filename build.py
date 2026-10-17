@@ -11,6 +11,7 @@ YT = "https://www.youtube.com/@minutodereflexaoBr"
 EBOOK = "https://pay.hotmart.com/W107585689S"
 BRAND = "Minuto de Reflexão"
 HANDLE = "@minutodereflexao.comm"
+GA_ID = "G-F8THCF6TXM"
 
 def load_articles():
     d = os.path.join(ROOT, "content", "articles")
@@ -74,6 +75,13 @@ def page(path, title, desc, body, active="", og_type="website", extra_head=""):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Sora:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/style.css">
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}
+var mdrConsent=null;try{{mdrConsent=localStorage.getItem('mdr_consent');}}catch(e){{}}
+gtag('consent','default',{{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:mdrConsent==='granted'?'granted':'denied'}});
+gtag('js',new Date());gtag('config','{GA_ID}');
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>
 {extra_head}
 </head>
 <body>
@@ -112,6 +120,19 @@ def page(path, title, desc, body, active="", og_type="website", extra_head=""):
   </div>
   <div class="wrap footer-bottom mono">© 2026 {BRAND} · Inspire-se e reflita</div>
 </footer>
+<div class="cookie-bar" id="cookie-bar" hidden>
+  <p>Usamos cookies de análise (Google Analytics) para entender como o site é usado e melhorar o conteúdo. Saiba mais na <a href="/privacidade/">política de privacidade</a>.</p>
+  <div class="cookie-actions">
+    <button type="button" class="btn btn-small-ghost" data-consent="denied">Recusar</button>
+    <button type="button" class="btn btn-primary" data-consent="granted">Aceitar</button>
+  </div>
+</div>
+<script>
+(function(){{var bar=document.getElementById('cookie-bar');if(!bar)return;var c=null;try{{c=localStorage.getItem('mdr_consent');}}catch(e){{}}
+if(!c)bar.hidden=false;
+bar.addEventListener('click',function(e){{var v=e.target.getAttribute('data-consent');if(!v)return;try{{localStorage.setItem('mdr_consent',v);}}catch(err){{}}
+gtag('consent','update',{{analytics_storage:v}});bar.hidden=true;}});}})();
+</script>
 <script>
 (function(){{var b=document.querySelector('.menu-toggle'),n=document.getElementById('menu');
 if(!b)return;b.addEventListener('click',function(){{var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);}});}})();
@@ -358,6 +379,8 @@ def build():
     <p>Esta política explica como o {BRAND} trata as informações de quem visita o site {SITE.replace('https://','')}, em linha com a Lei Geral de Proteção de Dados (LGPD).</p>
     <h2>Dados que coletamos</h2>
     <p>Coletamos apenas os dados que você nos envia voluntariamente pelo formulário de contato (nome, e-mail e mensagem). Esses dados são usados exclusivamente para responder ao seu contato e não são vendidos nem compartilhados com terceiros para fins comerciais.</p>
+    <h2>Cookies e estatísticas de uso</h2>
+    <p>Usamos o Google Analytics para entender, de forma agregada, como as pessoas usam o site (páginas mais lidas, tempo de leitura, de onde vêm as visitas). Os cookies de análise só são ativados se você clicar em "Aceitar" no aviso de cookies; se recusar, o site continua funcionando normalmente. Você pode mudar sua escolha a qualquer momento limpando os dados de navegação deste site. Não usamos cookies de publicidade.</p>
     <h2>Links externos</h2>
     <p>O site contém links para Instagram, Facebook, YouTube e para a plataforma de pagamento Hotmart. Ao acessá-los, valem as políticas de privacidade dessas plataformas.</p>
     <h2>Seus direitos</h2>
