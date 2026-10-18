@@ -37,6 +37,30 @@ O tempo de leitura e a cor da capa são calculados sozinhos. O link do guia
 
 Teste localmente com `python3 build.py` e faça commit + push na `main`.
 
+## Estilo de escrita (obrigatório)
+
+Todo texto do blog, e tudo o que for escrito para os canais do Minuto de Reflexão
+(Instagram, YouTube, e-books, legendas, stories), segue a skill
+`estilo-de-escrita-minuto-de-reflexao`. Carregue a skill antes de escrever.
+
+Resumo do estilo:
+
+- Tom acolhedor, otimista e instrutivo, de quem quer ajudar a pessoa a dar o próximo passo.
+- Fala direto com o leitor em segunda pessoa ("você", "sua vida"); "nós" só na abertura e no fechamento.
+- Linguagem simples, sem jargão, sem gírias, sem emojis e sem tom de sermão.
+- Construções da marca: "é importante...", "é preciso...", "lembre-se de que...", "tente...",
+  "que tal começar hoje mesmo?". Conectivos que dão ritmo: "Além disso,", "Por isso,", "Em resumo,".
+- Parágrafos de 3 a 4 frases. Cada bloco traz uma ideia e termina com uma orientação prática
+  no imperativo ("Divida as tarefas em partes pequenas").
+- Sempre que possível, um exemplo concreto do cotidiano ou uma pergunta que faça refletir.
+  Nada de generalidades vagas e nenhuma frase repetida em partes diferentes do texto.
+- Fechamento começando com "Em resumo", retomando os pontos principais e terminando com
+  uma pergunta que convida à ação hoje.
+
+No blog, o tamanho continua entre 800 e 1.200 palavras e as regras de SEO abaixo continuam
+valendo. O pedido de inscrição e curtida da skill é só para vídeo; no blog o convite final
+leva para outro artigo, para o Instagram ou para o guia "O labirinto do propósito".
+
 ## Identidade
 
 Azul-marinho (#1D3B82 / #132A63) com azul-claro (#9FD8EF), títulos em Italiana maiúsculas,
