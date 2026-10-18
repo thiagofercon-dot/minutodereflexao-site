@@ -192,3 +192,26 @@ blockquote{margin:40px 0;padding:28px 32px;border-radius:var(--radius);backgroun
 .cookie-actions{display:flex;gap:10px}
 .cookie-bar .btn{padding:9px 18px;font-size:.88rem}
 .btn-small-ghost{background:transparent;border-color:var(--line);color:var(--navy)}
+
+/* guias */
+.guides{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:44px}
+.guide{display:grid;grid-template-columns:170px 1fr;gap:30px;align-items:start}
+.guide .ebook-cover{padding:18px;transform:rotate(-2deg)}
+.guide .ebook-cover-title{font-size:1.3rem}
+.guide .kicker{margin-bottom:8px}
+.guide h3{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:1.7rem;line-height:1.1;color:#fff;margin:0 0 12px}
+.guide p{color:rgba(255,255,255,.86)}
+.guide-link{display:inline-block;margin-left:16px;color:#fff;font-size:.92rem;font-weight:500}
+.ebook-cover.alt{background:linear-gradient(165deg,#9FD8EF,#5E95CF 50%,#2F5DA8);color:#fff}
+.guide-hero{display:grid;grid-template-columns:1fr 280px;gap:64px;align-items:center}
+.guide-hero .ebook-cover{transform:rotate(3deg)}
+@media (max-width:900px){
+  .guides{grid-template-columns:1fr;gap:44px}
+  .guide-hero{grid-template-columns:1fr;gap:40px}
+  .guide-hero .ebook-cover{max-width:220px}
+}
+@media (max-width:520px){
+  .guide{grid-template-columns:1fr;gap:20px}
+  .guide .ebook-cover{max-width:170px}
+  .guide-link{display:block;margin:14px 0 0}
+}

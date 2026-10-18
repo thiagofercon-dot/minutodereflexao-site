@@ -32,8 +32,16 @@ Crie um arquivo em `content/articles/AAAA-MM-DD-slug.json`:
 - 1 ou 2 links internos no corpo para artigos relacionados (`<a href="/blog/slug/">texto descritivo</a>`).
 - Os artigos relacionados no fim da página priorizam o mesmo tema automaticamente.
 
-O tempo de leitura e a cor da capa são calculados sozinhos. O link do guia
-"O labirinto do propósito" pode ser inserido no corpo com o texto `EBOOK_URL` no href.
+O tempo de leitura e a cor da capa são calculados sozinhos.
+
+Guias digitais (e-books) que podem ser divulgados no fim do artigo, com o bloco `<div class="callout">`:
+
+- "O labirinto do propósito": use `EBOOK_URL` no href. Para artigos de Propósito.
+- "Gestão do tempo: produtividade com foco no que é essencial": use `EBOOK2_URL` no href.
+  Para artigos sobre tempo, produtividade, foco, disciplina, rotina, procrastinação ou equilíbrio
+  entre trabalho e descanso. A página do guia no site é `/guias/gestao-do-tempo/`.
+
+Use no máximo um bloco de guia por artigo, o que tiver mais relação com o tema.
 
 Teste localmente com `python3 build.py` e faça commit + push na `main`.
 
