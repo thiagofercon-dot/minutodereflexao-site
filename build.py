@@ -20,8 +20,11 @@ def load_articles():
     for fn in os.listdir(d):
         if fn.endswith(".json"):
             with open(os.path.join(d, fn), encoding="utf-8") as f:
-                items.append(json.load(f))
-    items.sort(key=lambda x: (x["date"], x.get("seq", 0)), reverse=True)
+                it = json.load(f)
+            if not it.get("time"):
+                it["time"] = git_time(os.path.join("content", "articles", fn))
+            items.append(it)
+    items.sort(key=lambda x: (x["date"], x.get("time") or "", x.get("seq", 0)), reverse=True)
     covers = ["c1", "c2", "c3"]
     for i, it in enumerate(items):
         it.setdefault("cover", covers[i % 3])
@@ -32,6 +35,31 @@ ARTICLES = load_articles()
 
 MESES = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho",
          "agosto", "setembro", "outubro", "novembro", "dezembro"]
+
+def git_time(rel):
+    """Horário (BRT) do commit que adicionou o arquivo, usado quando o JSON não traz "time"."""
+    try:
+        import subprocess
+        out = subprocess.run(["git", "log", "--diff-filter=A", "--date=format-local:%H:%M", "--format=%cd", "--", rel],
+                             cwd=ROOT, capture_output=True, text=True, env={**os.environ, "TZ": "America/Sao_Paulo"}).stdout.split()
+        return out[-1] if out else ""
+    except Exception:
+        return ""
+
+def hora_br(hhmm):
+    h, m = hhmm.split(":")
+    return f"{int(h)}h{m}"
+
+def data_curta(iso):
+    d = datetime.date.fromisoformat(iso)
+    return f"{d.day:02d}/{d.month:02d}/{d.year}"
+
+def iso_dt(a):
+    return f"{a['date']}T{a['time']}:00-03:00" if a.get("time") else a["date"]
+
+def publicado(a, curto=False):
+    d = data_curta(a["date"]) if curto else data_br(a["date"])
+    return f"{d} às {hora_br(a['time'])}" if a.get("time") else d
 
 def data_br(iso):
     d = datetime.date.fromisoformat(iso)
@@ -50,7 +78,7 @@ def social_links():
 def page(path, title, desc, body, active="", og_type="website", extra_head=""):
     canonical = SITE + path
     full_title = title if title == BRAND else f"{title} | {BRAND}"
-    nav = [("/", "Início", "inicio"), ("/blog/", "Blog", "blog"),
+    nav = [("/", "Início", "inicio"), ("/blog/", "Artigos", "blog"),
            ("/sobre/", "Sobre", "sobre"), ("/contato/", "Contato", "contato")]
     nav_html = "".join(
         f'<a href="{h}"{" aria-current=\"page\"" if k == active else ""}>{t}</a>' for h, t, k in nav)
@@ -129,7 +157,7 @@ src="https://www.facebook.com/tr?id=2184221455784624&ev=PageView&noscript=1"
     </div>
     <div>
       <p class="mono footer-title">Navegue</p>
-      <a href="/blog/">Blog</a><a href="/sobre/">Sobre</a><a href="/contato/">Contato</a><a href="/privacidade/">Privacidade</a>
+      <a href="/blog/">Artigos</a><a href="/sobre/">Sobre</a><a href="/contato/">Contato</a><a href="/privacidade/">Privacidade</a>
     </div>
     <div>
       <p class="mono footer-title">Acompanhe</p>
@@ -197,7 +225,7 @@ def card(a):
     <span class="card-cover-quote">“{a['quote']}”</span>
   </a>
   <div class="card-body">
-    <p class="mono meta">{a['tag']} · {a['read']} min de leitura</p>
+    <p class="mono meta">{a['tag']} · <time datetime="{iso_dt(a)}">{publicado(a, True)}</time></p>
     <h3><a href="/blog/{a['slug']}/">{a['title']}</a></h3>
     <p>{a['desc']}</p>
     <a class="link-arrow" href="/blog/{a['slug']}/">Ler artigo <span aria-hidden="true">→</span></a>
@@ -224,7 +252,7 @@ def build():
     <h1 class="display">Um minuto para pensar.<br>Uma vida para mudar.</h1>
     <p class="lead">Reflexões curtas e práticas sobre motivação, propósito, superação e desenvolvimento pessoal, para você seguir em frente, um dia de cada vez.</p>
     <div class="hero-actions">
-      <a class="btn btn-light" href="/blog/">Ler o blog</a>
+      <a class="btn btn-light" href="/blog/">Ler os artigos</a>
       <a class="btn btn-ghost" href="{IG}" target="_blank" rel="noopener">Seguir no Instagram</a>
     </div>
     <p class="mono hero-handle">{BRAND} {HANDLE}</p>
@@ -281,7 +309,7 @@ def build():
     blog = f"""
 <section class="page-hero">
   <div class="wrap">
-    <p class="mono kicker">Blog</p>
+    <p class="mono kicker">Artigos</p>
     <h1 class="display">Reflexões para<br>o seu dia</h1>
     <p class="lead">Textos curtos para ler em poucos minutos e levar para a vida.</p>
   </div>
@@ -290,7 +318,7 @@ def build():
   <div class="wrap"><div class="grid">{all_cards}</div></div>
 </section>
 """
-    write("blog/index.html", page("/blog/", "Blog",
+    write("blog/index.html", page("/blog/", "Artigos",
         "Artigos sobre motivação, propósito, superação e desenvolvimento pessoal do Minuto de Reflexão.", blog, "blog"))
 
     for i, a in enumerate(ARTICLES):
@@ -305,7 +333,7 @@ def build():
         ld = {
             "@context": "https://schema.org", "@type": "BlogPosting",
             "headline": a["title"], "description": a["desc"],
-            "datePublished": a["date"], "dateModified": a.get("updated", a["date"]),
+            "datePublished": iso_dt(a), "dateModified": a.get("updated", iso_dt(a)),
             "inLanguage": "pt-BR",
             "author": {"@type": "Organization", "name": BRAND},
             "publisher": {"@type": "Organization", "name": BRAND,
@@ -317,9 +345,9 @@ def build():
 <article class="post">
   <header class="post-hero {a['cover']}">
     <div class="wrap narrow">
-      <p class="mono kicker"><a href="/blog/">Blog</a> · {a['tag']}</p>
+      <p class="mono kicker"><a href="/blog/">Artigos</a> · {a['tag']}</p>
       <h1 class="post-title">{a['title']}</h1>
-      <p class="mono post-meta">{data_br(a['date'])} · {a['read']} min de leitura</p>
+      <p class="mono post-meta">Publicado em <time datetime="{iso_dt(a)}">{publicado(a)}</time>{(' · Atualizado em ' + data_br(a['updated'])) if a.get('updated') else ''} · {a['read']} min de leitura</p>
     </div>
   </header>
   <div class="wrap narrow post-body">
@@ -480,7 +508,7 @@ def build():
     <p class="mono kicker">Mensagem enviada</p>
     <h1 class="display">Obrigado!</h1>
     <p class="lead">Recebemos sua mensagem e vamos responder em breve. Enquanto isso, que tal uma reflexão?</p>
-    <a class="btn btn-light" href="/blog/">Ir para o blog</a>
+    <a class="btn btn-light" href="/blog/">Ir para os artigos</a>
   </div>
 </section>
 """

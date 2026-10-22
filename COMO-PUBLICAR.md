@@ -14,6 +14,7 @@ Crie um arquivo em `content/articles/AAAA-MM-DD-slug.json`:
   "desc": "Resumo de 1 a 2 frases (até ~160 caracteres), usado no Google e nos cards.",
   "tag": "Motivação | Propósito | Superação | Desenvolvimento pessoal",
   "date": "AAAA-MM-DD",
+  "time": "HH:MM (horário de Brasília da publicação, aparece no site como \"Publicado em ... às 9h55\")",
   "quote": "Frase de destaque curta (até ~60 caracteres), aparece na capa do card.",
   "keyword": "palavra-chave principal de cauda longa (não aparece no site, serve de controle)",
   "body": "<p>...</p><h2>...</h2><h3>...</h3><blockquote>...</blockquote>",
