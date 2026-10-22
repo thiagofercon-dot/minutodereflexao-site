@@ -59,7 +59,7 @@ def iso_dt(a):
 
 def publicado(a, curto=False):
     d = data_curta(a["date"]) if curto else data_br(a["date"])
-    return f"{d} às {hora_br(a['time'])}" if a.get("time") else d
+    return d
 
 def data_br(iso):
     d = datetime.date.fromisoformat(iso)
@@ -225,7 +225,7 @@ def card(a):
     <span class="card-cover-quote">“{a['quote']}”</span>
   </a>
   <div class="card-body">
-    <p class="mono meta">{a['tag']} · <time datetime="{iso_dt(a)}">{publicado(a, True)}</time></p>
+    <p class="mono meta">{a['tag']} · <time datetime="{a['date']}">{publicado(a, True)}</time></p>
     <h3><a href="/blog/{a['slug']}/">{a['title']}</a></h3>
     <p>{a['desc']}</p>
     <a class="link-arrow" href="/blog/{a['slug']}/">Ler artigo <span aria-hidden="true">→</span></a>
@@ -347,7 +347,7 @@ def build():
     <div class="wrap narrow">
       <p class="mono kicker"><a href="/blog/">Artigos</a> · {a['tag']}</p>
       <h1 class="post-title">{a['title']}</h1>
-      <p class="mono post-meta">Publicado em <time datetime="{iso_dt(a)}">{publicado(a)}</time>{(' · Atualizado em ' + data_br(a['updated'])) if a.get('updated') else ''} · {a['read']} min de leitura</p>
+      <p class="mono post-meta">Publicado em <time datetime="{a['date']}">{publicado(a)}</time>{(' · Atualizado em ' + data_br(a['updated'])) if a.get('updated') else ''} · {a['read']} min de leitura</p>
     </div>
   </header>
   <div class="wrap narrow post-body">
