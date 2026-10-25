@@ -141,7 +141,7 @@ src="https://www.facebook.com/tr?id=2184221455784624&ev=PageView&noscript=1"
     <button class="menu-toggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu"><span></span><span></span></button>
     <nav id="menu" class="nav" aria-label="Principal">
       {nav_html}
-      <a class="btn btn-small" href="/guias/">Guias digitais</a>
+      <a class="btn btn-small" href="/guias/">E-books</a>
     </nav>
   </div>
 </header>
@@ -232,7 +232,7 @@ def sales_page(g):
 <section class="page-hero" data-product="{e(g['title'])}">
   <div class="wrap guide-hero">
     <div>
-      <p class="mono kicker"><a href="/guias/">Guias digitais</a> · {e(g['kicker'].split(' · ')[-1])}</p>
+      <p class="mono kicker"><a href="/guias/">E-books</a> · {e(g['kicker'].split(' · ')[-1])}</p>
       <h1 class="display">{e(g['title'])}</h1>
       <p class="sp-subtitle">{e(g['subtitle'])}</p>
       <p class="lead">{e(g['hero_lead'])}</p>
@@ -269,7 +269,7 @@ def sales_page(g):
   </div>
   <div class="wrap sp-fit">
     <div class="sp-fit-box yes">
-      <p class="mono kicker dark">Este guia é para você se</p>
+      <p class="mono kicker dark">Este e-book é para você se</p>
       <ul>{fit}</ul>
     </div>
     <div class="sp-fit-box no">
@@ -292,7 +292,7 @@ def sales_page(g):
   <div class="wrap narrow">
     <div class="sp-guarantee">
       <p class="mono kicker dark">Garantia de 7 dias</p>
-      <p>Você pode ler com tranquilidade. Se o guia não fizer sentido para você nos primeiros 7 dias, é só pedir o reembolso pela própria Hotmart, sem complicação.</p>
+      <p>Você pode ler com tranquilidade. Se o e-book não fizer sentido para você nos primeiros 7 dias, é só pedir o reembolso pela própria Hotmart, sem complicação.</p>
     </div>
     <div class="sp-author">
       <p class="mono kicker dark">Sobre o autor</p>
@@ -322,15 +322,15 @@ def guide_cards():
     return f"""<div class="guides">
   <article class="guide">
     <div class="ebook-cover" aria-hidden="true">
-      <span class="mono">Guia</span>
+      <span class="mono">E-book</span>
       <span class="ebook-cover-title">O labirinto do propósito</span>
       <span class="mono ebook-cover-brand">{BRAND}</span>
     </div>
     <div>
       <p class="mono kicker">Propósito</p>
       <h3>O labirinto do propósito</h3>
-      <p>Como identificar seu chamado em meio ao caos. Um guia de leitura leve, com linguagem simples e exercícios práticos para você sair da dúvida e dar o próximo passo com clareza.</p>
-      <a class="btn btn-light" href="/guias/o-labirinto-do-proposito/">Conhecer o guia</a>
+      <p>Como identificar seu chamado em meio ao caos. Um e-book de leitura leve, com linguagem simples e exercícios práticos para você sair da dúvida e dar o próximo passo com clareza.</p>
+      <a class="btn btn-light" href="/guias/o-labirinto-do-proposito/">Conhecer o e-book</a>
       <a class="guide-link" href="{EBOOK}" target="_blank" rel="noopener" data-checkout="O labirinto do propósito">Comprar agora <span aria-hidden="true">→</span></a>
     </div>
   </article>
@@ -344,7 +344,7 @@ def guide_cards():
       <p class="mono kicker">Produtividade</p>
       <h3>Gestão do tempo</h3>
       <p>Produtividade com foco no que é essencial. Descubra como recuperar o controle da sua agenda e viver com mais foco, propósito e paz, mesmo em meio à correria do dia a dia.</p>
-      <a class="btn btn-light" href="/guias/gestao-do-tempo/">Conhecer o guia</a>
+      <a class="btn btn-light" href="/guias/gestao-do-tempo/">Conhecer o e-book</a>
       <a class="guide-link" href="{EBOOK2}" target="_blank" rel="noopener" data-checkout="Gestão do tempo">Comprar agora <span aria-hidden="true">→</span></a>
     </div>
   </article>
@@ -419,7 +419,7 @@ def build():
 
 <section class="section ebook" id="guias">
   <div class="wrap">
-    <p class="mono kicker">Guias digitais</p>
+    <p class="mono kicker">E-books</p>
     <h2 class="title light">Para ir mais fundo</h2>
     {guide_cards()}
   </div>
@@ -512,7 +512,7 @@ def build():
     guias = f"""
 <section class="page-hero">
   <div class="wrap">
-    <p class="mono kicker">Guias digitais</p>
+    <p class="mono kicker">E-books</p>
     <h1 class="display">Para ir<br>mais fundo</h1>
     <p class="lead">Leituras práticas para quem quer transformar reflexão em atitude no dia a dia.</p>
   </div>
@@ -521,8 +521,8 @@ def build():
   <div class="wrap">{guide_cards()}</div>
 </section>
 """
-    write("guias/index.html", page("/guias/", "Guias digitais",
-        "Guias digitais do Minuto de Reflexão: O labirinto do propósito e Gestão do tempo, leituras práticas para viver com mais foco e propósito.", guias, "guias"))
+    write("guias/index.html", page("/guias/", "E-books",
+        "E-books do Minuto de Reflexão: O labirinto do propósito e Gestão do tempo, leituras práticas para viver com mais foco e propósito.", guias, "guias"))
 
     for g in GUIDES:
         sales_page(g)
@@ -539,7 +539,7 @@ def build():
     <p class="lead dark">O <strong>{BRAND}</strong> nasceu de uma ideia simples: no meio da correria, todo mundo merece um minuto para parar, respirar e pensar no próprio caminho.</p>
     <p>Aqui você encontra reflexões curtas e práticas sobre motivação, propósito, superação e desenvolvimento pessoal. Nada de fórmulas mágicas ou promessas impossíveis, só ideias honestas, em linguagem simples, que você pode aplicar ainda hoje.</p>
     <blockquote>Evoluir não é virar outra pessoa. É continuar ajustando quem você já é.</blockquote>
-    <p>Além do blog, publicamos reflexões todos os dias no Instagram <a href="{IG}" target="_blank" rel="noopener">{HANDLE}</a> e no canal do YouTube. Também criamos guias digitais, como <a href="/guias/o-labirinto-do-proposito/">O labirinto do propósito</a> e <a href="/guias/gestao-do-tempo/">Gestão do tempo</a>, para quem quer ir mais fundo.</p>
+    <p>Além do blog, publicamos reflexões todos os dias no Instagram <a href="{IG}" target="_blank" rel="noopener">{HANDLE}</a> e no canal do YouTube. Também criamos e-books, como <a href="/guias/o-labirinto-do-proposito/">O labirinto do propósito</a> e <a href="/guias/gestao-do-tempo/">Gestão do tempo</a>, para quem quer ir mais fundo.</p>
     <p>Que cada visita aqui seja um pequeno passo na direção de quem você quer ser.</p>
     <div class="social social-big">{social_links()}</div>
   </div>
@@ -565,7 +565,7 @@ def build():
       <label>E-mail<input type="email" name="email" required autocomplete="email"></label>
       <label>Assunto
         <select name="assunto">
-          <option>Sugestão de tema</option><option>Dúvida sobre o guia</option><option>Parceria</option><option>Outro</option>
+          <option>Sugestão de tema</option><option>Dúvida sobre o e-book</option><option>Parceria</option><option>Outro</option>
         </select>
       </label>
       <label>Mensagem<textarea name="mensagem" rows="6" required></textarea></label>

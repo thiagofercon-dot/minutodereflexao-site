@@ -35,7 +35,7 @@ Crie um arquivo em `content/articles/AAAA-MM-DD-slug.json`:
 
 O tempo de leitura e a cor da capa são calculados sozinhos.
 
-Guias digitais (e-books) que podem ser divulgados no fim do artigo, com o bloco `<div class="callout">`:
+E-books que podem ser divulgados no fim do artigo, com o bloco `<div class="callout">`. No texto, chame sempre de "e-book" (nunca "guia"), por exemplo: "No e-book <strong>Gestão do tempo</strong>, você aprende..." e botão "Conhecer o e-book".
 
 - "O labirinto do propósito": use `EBOOK_URL` no href. Para artigos de Propósito. A página de venda é `/guias/o-labirinto-do-proposito/`.
 - "Gestão do tempo: produtividade com foco no que é essencial": use `EBOOK2_URL` no href.
