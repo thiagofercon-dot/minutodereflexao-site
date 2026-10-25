@@ -254,17 +254,15 @@ def sales_page(g):
     nofit = "".join(f"<li>{e(x)}</li>" for x in g["not_for"])
     faq = "".join(f"<details><summary>{e(f['q'])}</summary><p>{e(f['a'])}</p></details>" for f in g["faq"])
     body = f"""
-<section class="page-hero" data-product="{e(g['title'])}">
-  <div class="wrap guide-hero">
-    <div>
-      <p class="mono kicker"><a href="/guias/">E-books</a> · {e(g['kicker'].split(' · ')[-1])}</p>
-      <h1 class="display">{e(g['title'])}</h1>
-      <p class="sp-subtitle">{e(g['subtitle'])}</p>
-      <p class="lead">{e(g['hero_lead'])}</p>
-      {checkout_btn(g, "Quero o meu exemplar")}
-      {trust}
-    </div>
-    {cover}
+<section class="page-hero sp-hero" data-product="{e(g['title'])}">
+  <div class="wrap sp-hero-inner">
+    <p class="mono kicker"><a href="/guias/">E-books</a> · {e(g['kicker'].split(' · ')[-1])}</p>
+    <h1 class="display">{e(g['title'])}</h1>
+    <p class="sp-subtitle">{e(g['subtitle'])}</p>
+    <img class="sp-cover" src="{g['cover_img']}" alt="Capa do e-book {e(g['title'])}" width="{g['cover_size'][0]}" height="{g['cover_size'][1]}">
+    <p class="lead">{e(g['hero_lead'])}</p>
+    {checkout_btn(g, "Quero o meu exemplar")}
+    {trust}
   </div>
 </section>
 
@@ -349,11 +347,7 @@ def sales_page(g):
 def guide_cards():
     return f"""<div class="guides">
   <article class="guide">
-    <div class="ebook-cover" aria-hidden="true">
-      <span class="mono">E-book</span>
-      <span class="ebook-cover-title">O labirinto do propósito</span>
-      <span class="mono ebook-cover-brand">{BRAND}</span>
-    </div>
+    <a href="/guias/o-labirinto-do-proposito/" class="guide-cover" tabindex="-1" aria-hidden="true"><img src="/assets/ebooks/o-labirinto-do-proposito.jpg" alt="" width="800" height="800" loading="lazy"></a>
     <div>
       <p class="mono kicker">Propósito</p>
       <h3>O labirinto do propósito</h3>
@@ -363,11 +357,7 @@ def guide_cards():
     </div>
   </article>
   <article class="guide">
-    <div class="ebook-cover alt" aria-hidden="true">
-      <span class="mono">Leitura 360</span>
-      <span class="ebook-cover-title">Gestão do tempo</span>
-      <span class="mono ebook-cover-brand">Foco no essencial</span>
-    </div>
+    <a href="/guias/gestao-do-tempo/" class="guide-cover" tabindex="-1" aria-hidden="true"><img src="/assets/ebooks/gestao-do-tempo.jpg" alt="" width="400" height="566" loading="lazy"></a>
     <div>
       <p class="mono kicker">Produtividade</p>
       <h3>Gestão do tempo</h3>

@@ -277,3 +277,12 @@ blockquote cite{display:block;margin-top:12px;font-style:normal;font-size:.75rem
 .author-photo{flex:0 0 72px;width:72px;height:72px;border-radius:50%;object-fit:cover;display:block;border:3px solid #fff;box-shadow:0 6px 18px -8px rgba(19,42,99,.45)}
 .sp-author{display:flex;gap:22px;align-items:flex-start}
 @media (max-width:520px){.sp-author{flex-direction:column;gap:14px}}
+
+/* capas reais dos e-books */
+.sp-hero-inner{text-align:center;display:flex;flex-direction:column;align-items:center}
+.sp-hero-inner .lead{margin-left:auto;margin-right:auto}
+.sp-hero-inner .display{margin-bottom:14px}
+.sp-subtitle{margin-top:0}
+.sp-cover{display:block;width:100%;max-width:300px;height:auto;margin:18px auto 30px;border-radius:6px;box-shadow:0 30px 60px -25px rgba(0,0,0,.6)}
+.guide-cover{display:block}
+.guide-cover img{display:block;width:100%;height:auto;border-radius:4px;box-shadow:0 24px 50px -22px rgba(0,0,0,.55)}
