@@ -274,3 +274,6 @@ blockquote cite{display:block;margin-top:12px;font-style:normal;font-size:.75rem
 .author-box p{margin:0 0 10px;font-size:.96rem}
 .author-links{margin:0!important;font-size:.9rem}
 @media (max-width:520px){.author-box{flex-direction:column;gap:14px}}
+.author-photo{flex:0 0 72px;width:72px;height:72px;border-radius:50%;object-fit:cover;display:block;border:3px solid #fff;box-shadow:0 6px 18px -8px rgba(19,42,99,.45)}
+.sp-author{display:flex;gap:22px;align-items:flex-start}
+@media (max-width:520px){.sp-author{flex-direction:column;gap:14px}}

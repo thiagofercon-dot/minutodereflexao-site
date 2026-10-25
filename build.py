@@ -320,8 +320,11 @@ def sales_page(g):
       <p>Você pode ler com tranquilidade. Se o e-book não fizer sentido para você nos primeiros 7 dias, é só pedir o reembolso pela própria Hotmart, sem complicação.</p>
     </div>
     <div class="sp-author">
-      <p class="mono kicker dark">Sobre o autor</p>
-      <p>{e(g['author'])}</p>
+      <img class="author-photo" src="/assets/thiago-fernandes.jpg" alt="Foto de Thiago Fernandes" width="72" height="72" loading="lazy">
+      <div>
+        <p class="mono kicker dark">Sobre o autor</p>
+        <p>{e(g['author'])}</p>
+      </div>
     </div>
     <div class="sp-faq">
       <h2 class="sp-h2">Perguntas frequentes</h2>
@@ -521,7 +524,7 @@ def build():
             "headline": a["title"], "description": a["desc"],
             "datePublished": iso_dt(a), "dateModified": a.get("updated", iso_dt(a)),
             "inLanguage": "pt-BR",
-            "author": {"@type": "Person", "name": AUTHOR, "url": SITE + "/sobre/"},
+            "author": {"@type": "Person", "name": AUTHOR, "url": SITE + "/sobre/", "image": SITE + "/assets/thiago-fernandes.jpg"},
             "publisher": {"@type": "Organization", "name": BRAND,
                           "logo": {"@type": "ImageObject", "url": SITE + "/assets/og.jpg"}},
             "mainEntityOfPage": f"{SITE}/blog/{a['slug']}/",
@@ -541,7 +544,7 @@ def build():
     {body_html}
     {faq_html}
     <aside class="author-box">
-      <div class="author-mark" aria-hidden="true">TF</div>
+      <img class="author-photo" src="/assets/thiago-fernandes.jpg" alt="Foto de Thiago Fernandes" width="72" height="72" loading="lazy">
       <div>
         <p class="mono author-kicker">Escrito por</p>
         <p class="author-name">{AUTHOR}</p>
