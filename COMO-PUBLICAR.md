@@ -37,12 +37,14 @@ O tempo de leitura e a cor da capa são calculados sozinhos.
 
 Guias digitais (e-books) que podem ser divulgados no fim do artigo, com o bloco `<div class="callout">`:
 
-- "O labirinto do propósito": use `EBOOK_URL` no href. Para artigos de Propósito.
+- "O labirinto do propósito": use `EBOOK_URL` no href. Para artigos de Propósito. A página de venda é `/guias/o-labirinto-do-proposito/`.
 - "Gestão do tempo: produtividade com foco no que é essencial": use `EBOOK2_URL` no href.
   Para artigos sobre tempo, produtividade, foco, disciplina, rotina, procrastinação ou equilíbrio
-  entre trabalho e descanso. A página do guia no site é `/guias/gestao-do-tempo/`.
+  entre trabalho e descanso. A página de venda do guia no site é `/guias/gestao-do-tempo/`.
 
-Use no máximo um bloco de guia por artigo, o que tiver mais relação com o tema.
+Use no máximo um bloco de guia por artigo, o que tiver mais relação com o tema. No site, `EBOOK_URL` e `EBOOK2_URL` levam para as páginas de venda, e é de lá que o leitor segue para o checkout.
+
+O texto das páginas de venda fica em `content/guias/*.json`.
 
 Teste localmente com `python3 build.py` e faça commit + push na `main`.
 

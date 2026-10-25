@@ -180,12 +180,143 @@ bar.addEventListener('click',function(e){{var v=e.target.getAttribute('data-cons
 gtag('consent','update',{{analytics_storage:v}});bar.hidden=true;}});}})();
 </script>
 <script>
+(function(){{var pr=document.querySelector('[data-product]');
+if(pr&&window.fbq)fbq('track','ViewContent',{{content_name:pr.getAttribute('data-product'),content_type:'product'}});
+document.addEventListener('click',function(e){{var a=e.target.closest&&e.target.closest('a[data-checkout]');if(!a)return;var n=a.getAttribute('data-checkout');
+if(window.fbq)fbq('track','InitiateCheckout',{{content_name:n}});
+if(window.gtag)gtag('event','begin_checkout',{{items:[{{item_name:n}}]}});}});}})();
+</script>
+<script>
 (function(){{var b=document.querySelector('.menu-toggle'),n=document.getElementById('menu');
 if(!b)return;b.addEventListener('click',function(){{var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);}});}})();
 </script>
 </body>
 </html>
 """
+
+def load_guides():
+    d = os.path.join(ROOT, "content", "guias")
+    out = []
+    for fn in sorted(os.listdir(d)):
+        if fn.endswith(".json"):
+            with open(os.path.join(d, fn), encoding="utf-8") as f:
+                out.append(json.load(f))
+    return out
+
+GUIDES = load_guides()
+
+def checkout_btn(g, label, cls="btn btn-light"):
+    url = EBOOK2 if g["ebook_var"] == "EBOOK2" else EBOOK
+    return (f'<a class="{cls}" href="{url}" target="_blank" rel="noopener" '
+            f'data-checkout="{html.escape(g["title"])}">{label}</a>')
+
+def sales_page(g):
+    e = html.escape
+    path = f"/guias/{g['slug']}/"
+    cover = f"""<div class="ebook-cover {g.get('cover','')}" aria-hidden="true">
+      <span class="mono">{e(g['cover_top'])}</span>
+      <span class="ebook-cover-title">{e(g['title'])}</span>
+      <span class="mono ebook-cover-brand">{e(g['cover_bottom'])}</span>
+    </div>"""
+    trust = '<p class="mono sp-trust">E-book digital · Acesso pela Hotmart · 7 dias de garantia</p>'
+    problem = "".join(f"<p>{e(x)}</p>" for x in g["problem"])
+    cite = f'<cite class="mono">{e(g["quote_cite"])}</cite>' if g.get("quote_cite") else ""
+    chapters = "".join(
+        f'<div class="sp-chapter"><span class="mono">{i:02d}</span><h3>{e(t)}</h3><p>{e(d)}</p></div>'
+        for i, (t, d) in enumerate(g["chapters"], 1))
+    fmt = "".join(f"<p>{e(x)}</p>" for x in g["format"])
+    fit = "".join(f"<li>{e(x)}</li>" for x in g["for"])
+    nofit = "".join(f"<li>{e(x)}</li>" for x in g["not_for"])
+    faq = "".join(f"<details><summary>{e(f['q'])}</summary><p>{e(f['a'])}</p></details>" for f in g["faq"])
+    body = f"""
+<section class="page-hero" data-product="{e(g['title'])}">
+  <div class="wrap guide-hero">
+    <div>
+      <p class="mono kicker"><a href="/guias/">Guias digitais</a> · {e(g['kicker'].split(' · ')[-1])}</p>
+      <h1 class="display">{e(g['title'])}</h1>
+      <p class="sp-subtitle">{e(g['subtitle'])}</p>
+      <p class="lead">{e(g['hero_lead'])}</p>
+      {checkout_btn(g, "Quero o meu exemplar")}
+      {trust}
+    </div>
+    {cover}
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap narrow prose">
+    <h2 class="sp-h2">{e(g['problem_title'])}</h2>
+    {problem}
+    <blockquote>{e(g['quote'])}{cite}</blockquote>
+  </div>
+</section>
+
+<section class="section section-mist">
+  <div class="wrap">
+    <div class="narrow sp-head">
+      <p class="mono kicker dark">Conteúdo</p>
+      <h2 class="sp-h2">{e(g['chapters_title'])}</h2>
+      <p>{e(g['chapters_intro'])}</p>
+    </div>
+    <div class="sp-chapters">{chapters}</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap narrow prose">
+    <h2 class="sp-h2">{e(g['format_title'])}</h2>
+    {fmt}
+  </div>
+  <div class="wrap sp-fit">
+    <div class="sp-fit-box yes">
+      <p class="mono kicker dark">Este guia é para você se</p>
+      <ul>{fit}</ul>
+    </div>
+    <div class="sp-fit-box no">
+      <p class="mono kicker dark">Talvez não seja para você se</p>
+      <ul>{nofit}</ul>
+    </div>
+  </div>
+</section>
+
+<section class="section ebook">
+  <div class="wrap narrow sp-cta">
+    <p class="mono kicker">Uma reflexão para hoje</p>
+    <p class="sp-summary">{e(g['summary'])}</p>
+    {checkout_btn(g, "Quero o meu exemplar")}
+    {trust}
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap narrow">
+    <div class="sp-guarantee">
+      <p class="mono kicker dark">Garantia de 7 dias</p>
+      <p>Você pode ler com tranquilidade. Se o guia não fizer sentido para você nos primeiros 7 dias, é só pedir o reembolso pela própria Hotmart, sem complicação.</p>
+    </div>
+    <div class="sp-author">
+      <p class="mono kicker dark">Sobre o autor</p>
+      <p>{e(g['author'])}</p>
+    </div>
+    <div class="sp-faq">
+      <h2 class="sp-h2">Perguntas frequentes</h2>
+      {faq}
+    </div>
+    <p class="sp-related">Quer começar agora? Leia também <a href="{g['related'][0]}">{e(g['related'][1])}</a>.</p>
+    <p class="center">{checkout_btn(g, "Quero o meu exemplar", "btn btn-primary")}</p>
+  </div>
+</section>
+"""
+    ld_book = {"@context": "https://schema.org", "@type": "Book", "name": f"{g['title']}: {g['subtitle']}",
+               "author": {"@type": "Person", "name": "Thiago Fernandes"},
+               "publisher": {"@type": "Organization", "name": "Editora Prumo"},
+               "bookFormat": "https://schema.org/EBook", "inLanguage": "pt-BR",
+               "url": SITE + path, "description": g["seo_desc"]}
+    ld_faq = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [
+        {"@type": "Question", "name": f["q"], "acceptedAnswer": {"@type": "Answer", "text": f["a"]}} for f in g["faq"]]}
+    head = (f'<script type="application/ld+json">{json.dumps(ld_book, ensure_ascii=False)}</script>\n'
+            f'<script type="application/ld+json">{json.dumps(ld_faq, ensure_ascii=False)}</script>')
+    write(f"guias/{g['slug']}/index.html", page(path, g["seo_title"], g["seo_desc"], body, "guias", "website", head))
 
 def guide_cards():
     return f"""<div class="guides">
@@ -199,7 +330,8 @@ def guide_cards():
       <p class="mono kicker">Propósito</p>
       <h3>O labirinto do propósito</h3>
       <p>Como identificar seu chamado em meio ao caos. Um guia de leitura leve, com linguagem simples e exercícios práticos para você sair da dúvida e dar o próximo passo com clareza.</p>
-      <a class="btn btn-light" href="{EBOOK}" target="_blank" rel="noopener">Quero o guia</a>
+      <a class="btn btn-light" href="/guias/o-labirinto-do-proposito/">Conhecer o guia</a>
+      <a class="guide-link" href="{EBOOK}" target="_blank" rel="noopener" data-checkout="O labirinto do propósito">Comprar agora <span aria-hidden="true">→</span></a>
     </div>
   </article>
   <article class="guide">
@@ -213,7 +345,7 @@ def guide_cards():
       <h3>Gestão do tempo</h3>
       <p>Produtividade com foco no que é essencial. Descubra como recuperar o controle da sua agenda e viver com mais foco, propósito e paz, mesmo em meio à correria do dia a dia.</p>
       <a class="btn btn-light" href="/guias/gestao-do-tempo/">Conhecer o guia</a>
-      <a class="guide-link" href="{EBOOK2}" target="_blank" rel="noopener">Comprar agora <span aria-hidden="true">→</span></a>
+      <a class="guide-link" href="{EBOOK2}" target="_blank" rel="noopener" data-checkout="Gestão do tempo">Comprar agora <span aria-hidden="true">→</span></a>
     </div>
   </article>
 </div>"""
@@ -324,7 +456,10 @@ def build():
     for i, a in enumerate(ARTICLES):
         rest = [x for x in ARTICLES if x is not a]
         others = ([x for x in rest if x["tag"] == a["tag"]] + [x for x in rest if x["tag"] != a["tag"]])[:2]
-        body_html = a["body"].replace("EBOOK2_URL", EBOOK2).replace("EBOOK_URL", EBOOK)
+        body_html = (a["body"]
+            .replace('href="EBOOK2_URL" target="_blank" rel="noopener"', 'href="/guias/gestao-do-tempo/"')
+            .replace('href="EBOOK_URL" target="_blank" rel="noopener"', 'href="/guias/o-labirinto-do-proposito/"')
+            .replace("EBOOK2_URL", "/guias/gestao-do-tempo/").replace("EBOOK_URL", "/guias/o-labirinto-do-proposito/"))
         faq = a.get("faq") or []
         faq_html = ""
         if faq:
@@ -389,66 +524,8 @@ def build():
     write("guias/index.html", page("/guias/", "Guias digitais",
         "Guias digitais do Minuto de Reflexão: O labirinto do propósito e Gestão do tempo, leituras práticas para viver com mais foco e propósito.", guias, "guias"))
 
-    gestao = f"""
-<section class="page-hero">
-  <div class="wrap guide-hero">
-    <div>
-      <p class="mono kicker"><a href="/guias/">Guias digitais</a> · Leitura 360</p>
-      <h1 class="display">Gestão<br>do tempo</h1>
-      <p class="lead">Produtividade com foco no que é essencial. Descubra como recuperar o controle da sua agenda e viver com mais foco, propósito e paz, mesmo em meio à correria do dia a dia.</p>
-      <a class="btn btn-light" href="{EBOOK2}" target="_blank" rel="noopener">Quero o meu exemplar</a>
-    </div>
-    <div class="ebook-cover alt" aria-hidden="true">
-      <span class="mono">Leitura 360</span>
-      <span class="ebook-cover-title">Gestão do tempo</span>
-      <span class="mono ebook-cover-brand">Foco no essencial</span>
-    </div>
-  </div>
-</section>
-<section class="section">
-  <div class="wrap narrow prose">
-    <p class="lead dark">Você termina o dia cansado, com a sensação de que esteve ocupado o tempo todo, mas não avançou no que realmente importa? Se a sua lista de tarefas nunca acaba, este guia foi escrito para você.</p>
-    <p>O e-book <strong>Gestão do tempo: produtividade com foco no que é essencial</strong> une descobertas da ciência sobre foco e planejamento a princípios de sabedoria atemporal. A proposta é olhar para o tempo não apenas como um recurso a ser administrado, mas como algo a ser vivido com sentido. Por isso, mais do que encaixar tarefas na agenda, você vai aprender a escolher o que merece o seu tempo.</p>
-
-    <h2>Para quem é este guia</h2>
-    <p>Ele foi pensado para profissionais, empreendedores, líderes e qualquer pessoa que sente que está sempre ocupada, mas sem avançar no que realmente importa. É para quem busca produtividade com propósito, e não apenas uma lista maior de tarefas cumpridas. Se você quer sair do modo automático e voltar a decidir como usa as suas horas, este é um bom ponto de partida.</p>
-
-    <h2>O que você vai aprender nos 9 capítulos</h2>
-    <p>A seguir, veja os principais caminhos que o guia percorre com você.</p>
-    <h3>O tempo do relógio e o tempo do propósito</h3>
-    <p>Entenda a diferença entre Chronos, o tempo que o relógio mede, e Kairós, o tempo que tem significado. É essa distinção que muda a forma como você enxerga a sua agenda.</p>
-    <h3>O essencial primeiro</h3>
-    <p>Aprenda a escolher o que realmente importa e a dizer não, com tranquilidade, ao que não importa.</p>
-    <h3>Foco profundo em meio às distrações</h3>
-    <p>Descubra como treinar a atenção para trabalhar de forma concentrada, mesmo cercado de notificações e interrupções.</p>
-    <h3>Energia, e não apenas horas</h3>
-    <p>Lembre-se de que uma hora com energia vale mais do que três horas no cansaço. O guia mostra como gerenciar a sua energia ao longo do dia.</p>
-    <h3>Planejamento realista</h3>
-    <p>Saia da armadilha do "vai dar tempo" e aprenda a planejar com os pés no chão.</p>
-    <h3>Rotinas que trabalham a seu favor</h3>
-    <p>Crie hábitos e rotinas que sustentam o que é importante, sem depender da força de vontade a cada manhã.</p>
-    <h3>Descanso sem culpa</h3>
-    <p>Entenda por que o descanso faz parte do trabalho, e não é um prêmio que só vem depois dele.</p>
-
-    <h2>Um caderno de práticas para aplicar no dia a dia</h2>
-    <p>Além do conteúdo, o guia traz um caderno de práticas com exercícios simples para você aplicar cada conceito na sua rotina. É importante transformar leitura em ação, e é exatamente para isso que esses exercícios existem. Tente fazer um por dia, no seu ritmo, e observe como a sua relação com o tempo começa a mudar.</p>
-
-    <blockquote>O tempo não é só para administrar. É para viver com sentido.</blockquote>
-
-    <h2>Em resumo</h2>
-    <p>Em resumo, este guia ajuda você a separar o urgente do essencial, proteger o seu foco, cuidar da sua energia, planejar com realismo e descansar sem culpa. São escolhas pequenas que, somadas, devolvem a você o controle da própria agenda. Que tal começar hoje mesmo a viver o seu tempo com mais foco, propósito e paz?</p>
-
-    <div class="callout">
-      <p class="callout-kicker">Guia digital · e-book</p>
-      <p><strong>Gestão do tempo: produtividade com foco no que é essencial.</strong> Garanta o seu exemplar e comece a aplicar as estratégias ainda hoje.</p>
-      <p><a class="btn btn-primary" href="{EBOOK2}" target="_blank" rel="noopener">Quero o meu exemplar</a></p>
-    </div>
-    <p>Quer começar agora? Leia também <a href="/blog/motivacao-ou-disciplina/">como ter disciplina quando a motivação acaba</a>.</p>
-  </div>
-</section>
-"""
-    write("guias/gestao-do-tempo/index.html", page("/guias/gestao-do-tempo/", "Gestão do tempo: produtividade com foco no essencial",
-        "E-book Gestão do tempo: recupere o controle da sua agenda e viva com mais foco, propósito e paz, mesmo na correria do dia a dia.", gestao, "guias"))
+    for g in GUIDES:
+        sales_page(g)
 
     sobre = f"""
 <section class="page-hero">
@@ -462,7 +539,7 @@ def build():
     <p class="lead dark">O <strong>{BRAND}</strong> nasceu de uma ideia simples: no meio da correria, todo mundo merece um minuto para parar, respirar e pensar no próprio caminho.</p>
     <p>Aqui você encontra reflexões curtas e práticas sobre motivação, propósito, superação e desenvolvimento pessoal. Nada de fórmulas mágicas ou promessas impossíveis, só ideias honestas, em linguagem simples, que você pode aplicar ainda hoje.</p>
     <blockquote>Evoluir não é virar outra pessoa. É continuar ajustando quem você já é.</blockquote>
-    <p>Além do blog, publicamos reflexões todos os dias no Instagram <a href="{IG}" target="_blank" rel="noopener">{HANDLE}</a> e no canal do YouTube. Também criamos guias digitais, como <a href="{EBOOK}" target="_blank" rel="noopener">O labirinto do propósito</a> e <a href="/guias/gestao-do-tempo/">Gestão do tempo</a>, para quem quer ir mais fundo.</p>
+    <p>Além do blog, publicamos reflexões todos os dias no Instagram <a href="{IG}" target="_blank" rel="noopener">{HANDLE}</a> e no canal do YouTube. Também criamos guias digitais, como <a href="/guias/o-labirinto-do-proposito/">O labirinto do propósito</a> e <a href="/guias/gestao-do-tempo/">Gestão do tempo</a>, para quem quer ir mais fundo.</p>
     <p>Que cada visita aqui seja um pequeno passo na direção de quem você quer ser.</p>
     <div class="social social-big">{social_links()}</div>
   </div>
@@ -550,7 +627,7 @@ def build():
     write("404.html", page("/404", "Página não encontrada", "Página não encontrada.", notfound,
           extra_head='<meta name="robots" content="noindex">'))
 
-    urls = ["/", "/blog/", "/guias/", "/guias/gestao-do-tempo/", "/sobre/", "/contato/", "/privacidade/"] + [f"/blog/{a['slug']}/" for a in ARTICLES]
+    urls = ["/", "/blog/", "/guias/", "/guias/o-labirinto-do-proposito/", "/guias/gestao-do-tempo/", "/sobre/", "/contato/", "/privacidade/"] + [f"/blog/{a['slug']}/" for a in ARTICLES]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm += "".join(f"  <url><loc>{SITE}{u}</loc><lastmod>2026-10-17</lastmod></url>\n" for u in urls)
     sm += "</urlset>\n"

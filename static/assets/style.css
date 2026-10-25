@@ -215,3 +215,43 @@ blockquote{margin:40px 0;padding:28px 32px;border-radius:var(--radius);backgroun
   .guide .ebook-cover{max-width:170px}
   .guide-link{display:block;margin:14px 0 0}
 }
+
+/* página de venda */
+.sp-subtitle{font-family:var(--display);text-transform:uppercase;font-size:clamp(1.2rem,2.2vw,1.6rem);line-height:1.2;color:var(--sky);margin:-8px 0 18px}
+.sp-trust{font-size:.72rem;text-transform:uppercase;color:rgba(255,255,255,.75);margin:16px 0 0}
+.sp-h2{font-family:var(--display);font-weight:400;text-transform:uppercase;font-size:clamp(1.8rem,3.4vw,2.5rem);line-height:1.12;color:var(--navy-deep);margin:0 0 22px}
+.prose .sp-h2{font-family:var(--display);font-weight:400;font-size:clamp(1.8rem,3.4vw,2.5rem);line-height:1.12;color:var(--navy-deep);margin:0 0 22px}
+.sp-head{margin:0 0 36px}
+blockquote cite{display:block;margin-top:12px;font-style:normal;font-size:.75rem;color:var(--blue)}
+.sp-chapters{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.sp-chapter{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px 24px}
+.sp-chapter span{color:var(--blue);font-size:.8rem}
+.sp-chapter h3{font-weight:500;color:var(--ink);font-size:1.06rem;line-height:1.35;margin:10px 0 8px}
+.sp-chapter p{margin:0;font-size:.95rem}
+.sp-fit{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px;max-width:980px}
+.sp-fit-box{border-radius:var(--radius);padding:28px 28px 18px}
+.sp-fit-box.yes{background:var(--mist);border:1px solid var(--sky-soft)}
+.sp-fit-box.no{background:#fff;border:1px solid var(--line)}
+.sp-fit-box .kicker{margin-bottom:12px}
+.sp-fit-box ul{margin:0;padding-left:20px}
+.sp-fit-box li{margin-bottom:10px}
+.sp-cta{text-align:center}
+.sp-summary{font-size:1.15rem;color:rgba(255,255,255,.9);margin:0 0 28px}
+.sp-cta .sp-trust{margin-top:18px}
+.sp-guarantee{background:linear-gradient(135deg,var(--mist),var(--sky-soft));border-radius:var(--radius);padding:28px 30px;margin-bottom:28px}
+.sp-guarantee p:last-child,.sp-author p:last-child{margin-bottom:0}
+.sp-author{border:1px solid var(--line);border-radius:var(--radius);padding:28px 30px;margin-bottom:56px}
+.sp-faq details{border-bottom:1px solid var(--line);padding:16px 0}
+.sp-faq summary{cursor:pointer;font-weight:500;color:var(--ink);list-style:none;position:relative;padding-right:28px}
+.sp-faq summary::-webkit-details-marker{display:none}
+.sp-faq summary::after{content:"+";position:absolute;right:0;top:-2px;font-size:1.3rem;color:var(--blue)}
+.sp-faq details[open] summary::after{content:"–"}
+.sp-faq details p{margin:10px 0 0}
+.sp-related{margin:40px 0 26px}
+@media (max-width:900px){
+  .sp-chapters{grid-template-columns:1fr 1fr}
+  .sp-fit{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .sp-chapters{grid-template-columns:1fr}
+}
