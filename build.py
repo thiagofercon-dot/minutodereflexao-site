@@ -13,6 +13,31 @@ EBOOK2 = "https://go.hotmart.com/J108088170D"
 BRAND = "Minuto de Reflexão"
 HANDLE = "@minutodereflexao.comm"
 GA_ID = "G-F8THCF6TXM"
+AUTHOR = "Thiago Fernandes"
+AUTHOR_BIO = ("Escritor e fundador da Editora Prumo e do Minuto de Reflexão. Escreve sobre propósito, foco e "
+              "desenvolvimento pessoal com linguagem simples e aplicável ao dia a dia. É autor dos e-books "
+              "O labirinto do propósito e Gestão do tempo.")
+TEMAS = {
+    "Motivação": ("motivacao", "Como começar, e principalmente como continuar quando a vontade some."),
+    "Propósito": ("proposito", "Encontrar direção e sentido mesmo quando tudo parece confuso."),
+    "Superação": ("superacao", "Levantar depois das quedas e transformar dor em aprendizado."),
+    "Desenvolvimento pessoal": ("desenvolvimento-pessoal", "Pequenos ajustes diários que mudam quem você é ao longo do tempo."),
+}
+
+def tema_url(tag):
+    return f"/blog/tema/{TEMAS[tag][0]}/" if tag in TEMAS else "/blog/"
+
+def article_img(a):
+    """Imagem do artigo feita no Canva, se já existir em static/assets/artigos/."""
+    rel = f"assets/artigos/{a['slug']}.jpg"
+    return "/" + rel if os.path.exists(os.path.join(ROOT, "static", rel)) else ""
+
+def temas_nav(atual=""):
+    links = [f'<a href="/blog/"{" aria-current=\"page\"" if not atual else ""}>Todos</a>']
+    for tag, (slug, _) in TEMAS.items():
+        cur = ' aria-current="page"' if tag == atual else ""
+        links.append(f'<a href="/blog/tema/{slug}/"{cur}>{tag}</a>')
+    return '<nav class="temas" aria-label="Temas">' + "".join(links) + "</nav>"
 
 def load_articles():
     d = os.path.join(ROOT, "content", "articles")
@@ -75,7 +100,7 @@ def social_links():
     return (f'<a href="{IG}" target="_blank" rel="noopener" aria-label="Instagram">{ICONS["ig"]}</a>'
             f'<a href="{YT}" target="_blank" rel="noopener" aria-label="YouTube">{ICONS["yt"]}</a>')
 
-def page(path, title, desc, body, active="", og_type="website", extra_head=""):
+def page(path, title, desc, body, active="", og_type="website", extra_head="", og_image=""):
     canonical = SITE + path
     full_title = title if title == BRAND else f"{title} | {BRAND}"
     nav = [("/", "Início", "inicio"), ("/blog/", "Artigos", "blog"),
@@ -96,7 +121,7 @@ def page(path, title, desc, body, active="", og_type="website", extra_head=""):
 <meta property="og:title" content="{html.escape(full_title)}">
 <meta property="og:description" content="{html.escape(desc)}">
 <meta property="og:url" content="{canonical}">
-<meta property="og:image" content="{SITE}/assets/og.jpg">
+<meta property="og:image" content="{SITE}{og_image or "/assets/og.jpg"}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1D3B82">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -351,13 +376,19 @@ def guide_cards():
 </div>"""
 
 def card(a):
-    return f"""<article class="card">
-  <a class="card-cover {a['cover']}" href="/blog/{a['slug']}/" aria-hidden="true" tabindex="-1">
+    img = article_img(a)
+    if img:
+        cover = (f'<a class="card-cover card-img" href="/blog/{a["slug"]}/" aria-hidden="true" tabindex="-1">'
+                 f'<img src="{img}" alt="" loading="lazy" width="1200" height="630"></a>')
+    else:
+        cover = f"""<a class="card-cover {a['cover']}" href="/blog/{a['slug']}/" aria-hidden="true" tabindex="-1">
     <span class="mono card-cover-tag">{a['tag']}</span>
     <span class="card-cover-quote">“{a['quote']}”</span>
-  </a>
+  </a>"""
+    return f"""<article class="card">
+  {cover}
   <div class="card-body">
-    <p class="mono meta">{a['tag']} · <time datetime="{a['date']}">{publicado(a, True)}</time></p>
+    <p class="mono meta"><a href="{tema_url(a['tag'])}">{a['tag']}</a> · <time datetime="{a['date']}">{publicado(a, True)}</time></p>
     <h3><a href="/blog/{a['slug']}/">{a['title']}</a></h3>
     <p>{a['desc']}</p>
     <a class="link-arrow" href="/blog/{a['slug']}/">Ler artigo <span aria-hidden="true">→</span></a>
@@ -447,11 +478,31 @@ def build():
   </div>
 </section>
 <section class="section">
-  <div class="wrap"><div class="grid">{all_cards}</div></div>
+  <div class="wrap">{temas_nav()}<div class="grid">{all_cards}</div></div>
 </section>
 """
     write("blog/index.html", page("/blog/", "Artigos",
         "Artigos sobre motivação, propósito, superação e desenvolvimento pessoal do Minuto de Reflexão.", blog, "blog"))
+
+    for tag, (tslug, tdesc) in TEMAS.items():
+        itens = [a for a in ARTICLES if a["tag"] == tag]
+        cards = "".join(card(a) for a in itens) or '<p class="muted">Em breve, novos artigos sobre este tema.</p>'
+        n = len(itens)
+        tbody = f"""
+<section class="page-hero">
+  <div class="wrap">
+    <p class="mono kicker"><a href="/blog/">Artigos</a> · Tema</p>
+    <h1 class="display">{tag}</h1>
+    <p class="lead">{tdesc}</p>
+    <p class="mono sp-trust">{n} artigo{'s' if n != 1 else ''}</p>
+  </div>
+</section>
+<section class="section">
+  <div class="wrap">{temas_nav(tag)}<div class="grid">{cards}</div></div>
+</section>
+"""
+        write(f"blog/tema/{tslug}/index.html", page(f"/blog/tema/{tslug}/", f"Artigos sobre {tag.lower()}",
+              f"Artigos do Minuto de Reflexão sobre {tag.lower()}: {tdesc}", tbody, "blog"))
 
     for i, a in enumerate(ARTICLES):
         rest = [x for x in ARTICLES if x is not a]
@@ -470,24 +521,34 @@ def build():
             "headline": a["title"], "description": a["desc"],
             "datePublished": iso_dt(a), "dateModified": a.get("updated", iso_dt(a)),
             "inLanguage": "pt-BR",
-            "author": {"@type": "Organization", "name": BRAND},
+            "author": {"@type": "Person", "name": AUTHOR, "url": SITE + "/sobre/"},
             "publisher": {"@type": "Organization", "name": BRAND,
                           "logo": {"@type": "ImageObject", "url": SITE + "/assets/og.jpg"}},
             "mainEntityOfPage": f"{SITE}/blog/{a['slug']}/",
-            "image": SITE + "/assets/og.jpg",
+            "image": SITE + (article_img(a) or "/assets/og.jpg"),
         }
         art = f"""
 <article class="post">
   <header class="post-hero {a['cover']}">
     <div class="wrap narrow">
-      <p class="mono kicker"><a href="/blog/">Artigos</a> · {a['tag']}</p>
+      <p class="mono kicker"><a href="/blog/">Artigos</a> · <a href="{tema_url(a['tag'])}">{a['tag']}</a></p>
       <h1 class="post-title">{a['title']}</h1>
-      <p class="mono post-meta">Publicado em <time datetime="{a['date']}">{publicado(a)}</time>{(' · Atualizado em ' + data_br(a['updated'])) if a.get('updated') else ''} · {a['read']} min de leitura</p>
+      <p class="mono post-meta">Por {AUTHOR} · Publicado em <time datetime="{a['date']}">{publicado(a)}</time>{(' · Atualizado em ' + data_br(a['updated'])) if a.get('updated') else ''} · {a['read']} min de leitura</p>
     </div>
   </header>
   <div class="wrap narrow post-body">
+    {(f'<figure class="post-img"><img src="{article_img(a)}" alt="{html.escape(a["title"])}" width="1200" height="630"></figure>') if article_img(a) else ''}
     {body_html}
     {faq_html}
+    <aside class="author-box">
+      <div class="author-mark" aria-hidden="true">TF</div>
+      <div>
+        <p class="mono author-kicker">Escrito por</p>
+        <p class="author-name">{AUTHOR}</p>
+        <p>{AUTHOR_BIO}</p>
+        <p class="author-links"><a href="/sobre/">Sobre o Minuto de Reflexão</a> · <a href="/guias/">Conheça os e-books</a></p>
+      </div>
+    </aside>
     <div class="share">
       <p class="mono">Gostou? Compartilhe esta reflexão</p>
       <div class="share-links">
@@ -505,7 +566,7 @@ def build():
   </div>
 </section>
 """
-        write(f"blog/{a['slug']}/index.html", page(f"/blog/{a['slug']}/", a["title"], a["desc"], art, "blog", "article",
+        write(f"blog/{a['slug']}/index.html", page(f"/blog/{a['slug']}/", a["title"], a["desc"], art, "blog", "article", og_image=article_img(a), extra_head=
               f'<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>'
               + (f'\n<script type="application/ld+json">{json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": f["q"], "acceptedAnswer": {"@type": "Answer", "text": f["a"]}} for f in faq]}, ensure_ascii=False)}</script>' if faq else "")))
 
@@ -627,7 +688,7 @@ def build():
     write("404.html", page("/404", "Página não encontrada", "Página não encontrada.", notfound,
           extra_head='<meta name="robots" content="noindex">'))
 
-    urls = ["/", "/blog/", "/guias/", "/guias/o-labirinto-do-proposito/", "/guias/gestao-do-tempo/", "/sobre/", "/contato/", "/privacidade/"] + [f"/blog/{a['slug']}/" for a in ARTICLES]
+    urls = ["/", "/blog/", "/guias/", "/guias/o-labirinto-do-proposito/", "/guias/gestao-do-tempo/", "/sobre/", "/contato/", "/privacidade/"] + [f"/blog/tema/{v[0]}/" for v in TEMAS.values()] + [f"/blog/{a['slug']}/" for a in ARTICLES]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm += "".join(f"  <url><loc>{SITE}{u}</loc><lastmod>2026-10-17</lastmod></url>\n" for u in urls)
     sm += "</urlset>\n"

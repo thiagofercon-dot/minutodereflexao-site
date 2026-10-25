@@ -255,3 +255,22 @@ blockquote cite{display:block;margin-top:12px;font-style:normal;font-size:.75rem
 @media (max-width:600px){
   .sp-chapters{grid-template-columns:1fr}
 }
+
+/* temas, autor e imagens dos artigos */
+.temas{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 36px}
+.temas a{padding:8px 16px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-size:.9rem;color:var(--navy);background:#fff}
+.temas a:hover{border-color:var(--blue)}
+.temas a[aria-current="page"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.meta a{color:inherit;text-decoration:none}
+.meta a:hover{text-decoration:underline}
+.card-img{padding:0;aspect-ratio:1200/630;background:var(--mist)}
+.card-img img{width:100%;height:100%;object-fit:cover;display:block}
+.post-img{margin:0 0 40px}
+.post-img img{width:100%;height:auto;border-radius:var(--radius);display:block}
+.author-box{display:flex;gap:20px;align-items:flex-start;margin:48px 0 0;padding:26px 28px;border:1px solid var(--line);border-radius:var(--radius);background:var(--mist)}
+.author-mark{flex:0 0 56px;width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--sky),var(--blue));color:var(--navy-deep);font-family:var(--display);font-size:1.4rem}
+.author-kicker{font-size:.7rem;text-transform:uppercase;color:var(--blue);margin:0 0 2px!important}
+.author-name{font-weight:600;color:var(--ink);margin:0 0 8px!important;font-size:1.08rem}
+.author-box p{margin:0 0 10px;font-size:.96rem}
+.author-links{margin:0!important;font-size:.9rem}
+@media (max-width:520px){.author-box{flex-direction:column;gap:14px}}
