@@ -23,7 +23,9 @@ jobs:
               try:
                   data = urllib.request.urlopen(url, timeout=60).read()
                   assert len(data) > 5000
-                  open(f"static/assets/artigos/{slug}.jpg", "wb").write(data)
+                  dest = f"static/assets/{slug}" if "/" in slug else f"static/assets/artigos/{slug}.jpg"
+                  os.makedirs(os.path.dirname(dest), exist_ok=True)
+                  open(dest, "wb").write(data)
                   print("ok", slug, len(data))
               except Exception as e:
                   print("falhou", slug, e); restantes[slug] = url
@@ -33,5 +35,5 @@ jobs:
         run: |
           git config user.name "Thiago Fernandes"
           git config user.email "thiagofercon@gmail.com"
-          git add static/assets/artigos content/imagens-pendentes.json
+          git add static/assets content/imagens-pendentes.json
           git diff --cached --quiet || (git commit -m "Imagens dos artigos (Canva)" && git push)
