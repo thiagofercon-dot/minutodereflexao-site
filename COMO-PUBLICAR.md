@@ -46,6 +46,15 @@ Use no máximo um bloco de guia por artigo, o que tiver mais relação com o tem
 
 O texto das páginas de venda fica em `content/guias/*.json`.
 
+## Capa do artigo (Canva)
+
+Cada artigo tem uma capa 1200x630 feita no Canva, que aparece no topo do artigo, nos cards e no compartilhamento.
+
+- Modelo: design `DAHY-XeJl8Q` na pasta "Capas dos artigos - Minuto de Reflexão (Blog)" (`FAHY-YHvRNA`). Nunca edite o modelo: duplique.
+- Na cópia, troque o tema (elemento `PBbFNSrYLhlFpSlw-LBn0CHdmFbBs21Ft`) e o título curto, a parte antes dos dois-pontos, em até 4 linhas (elemento `PBbFNSrYLhlFpSlw-LBCdcRtvcscnB5SG`). Renomeie para "Capa - <slug>" e mova para a pasta.
+- Exporte em JPG (largura 1200, qualidade 85) e coloque `"<slug>": "<url do export>"` em `content/imagens-pendentes.json`, no mesmo commit do artigo.
+- Ao receber o push, a rotina do GitHub (`.github/workflows/imagens.yml`) baixa a imagem para `static/assets/artigos/<slug>.jpg` e faz um novo commit, que publica o site com a capa. Sem a capa, o site usa o card azul padrão.
+
 Teste localmente com `python3 build.py` e faça commit + push na `main`.
 
 ## Estilo de escrita (obrigatório)
