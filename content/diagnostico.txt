@@ -1,0 +1,38 @@
+== http://minutodereflexao.com/
+301 -> https://minutodereflexao.com/
+== https://www.minutodereflexao.com/
+301 -> https://minutodereflexao.com/
+== http://www.minutodereflexao.com/
+301 -> https://www.minutodereflexao.com/
+== https://minutodereflexao.com/
+200 -> 
+== https://minutodereflexao.com/blog
+301 -> https://minutodereflexao.com/blog/
+== https://minutodereflexao.com/blog/como-parar-de-procrastinar
+301 -> https://minutodereflexao.com/blog/como-parar-de-procrastinar/
+== https://effervescent-madeleine-77e208.netlify.app/
+200 -> 
+== https://minutodereflexao.com/index.html
+200 -> 
+== URLs do sitemap
+200 ->  https://minutodereflexao.com/
+200 ->  https://minutodereflexao.com/blog/
+200 ->  https://minutodereflexao.com/guias/
+200 ->  https://minutodereflexao.com/guias/o-labirinto-do-proposito/
+200 ->  https://minutodereflexao.com/guias/gestao-do-tempo/
+200 ->  https://minutodereflexao.com/sobre/
+200 ->  https://minutodereflexao.com/contato/
+200 ->  https://minutodereflexao.com/privacidade/
+200 ->  https://minutodereflexao.com/blog/tema/motivacao/
+200 ->  https://minutodereflexao.com/blog/tema/proposito/
+200 ->  https://minutodereflexao.com/blog/tema/superacao/
+200 ->  https://minutodereflexao.com/blog/tema/desenvolvimento-pessoal/
+200 ->  https://minutodereflexao.com/blog/como-parar-de-procrastinar/
+200 ->  https://minutodereflexao.com/blog/como-criar-novos-habitos/
+200 ->  https://minutodereflexao.com/blog/como-superar-o-medo-de-errar/
+200 ->  https://minutodereflexao.com/blog/como-encontrar-sentido-no-trabalho/
+200 ->  https://minutodereflexao.com/blog/como-lidar-com-a-frustracao/
+200 ->  https://minutodereflexao.com/blog/como-sair-da-zona-de-conforto/
+200 ->  https://minutodereflexao.com/blog/motivacao-ou-disciplina/
+200 ->  https://minutodereflexao.com/blog/como-descobrir-seu-proposito/
+200 ->  https://minutodereflexao.com/blog/recomecar-nao-e-fracassar/
