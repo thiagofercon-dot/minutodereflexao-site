@@ -737,6 +737,7 @@ def build():
     write("sitemap.xml", sm)
     write("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")
     write_security_files()
+    write("versao.txt", (os.environ.get("COMMIT_REF") or "local") + "\n")
 
 if __name__ == "__main__":
     build()

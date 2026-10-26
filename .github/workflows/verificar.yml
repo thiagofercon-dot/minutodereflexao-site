@@ -13,12 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Esperar publicação
-        run: sleep 90
+        run: sleep 150
       - name: Cabeçalhos, redirecionamentos e arquivos internos
         run: |
           out=content/verificacao.txt; : > $out
           for u in https://minutodereflexao.com/ https://effervescent-madeleine-77e208.netlify.app/ http://www.minutodereflexao.com/; do
             echo "== $u" >> $out; curl -sI "$u" | grep -iE '^(HTTP|location|content-security|x-frame|x-content|referrer|permissions|strict|cross-origin)' >> $out; done
+          echo "versao publicada: $(curl -s https://minutodereflexao.com/versao.txt) / esperado: $GITHUB_SHA" >> $out
+          echo "capa ebook: $(curl -s -o /dev/null -w '%{http_code}' https://minutodereflexao.com/assets/ebooks/gestao-do-tempo.jpg)" >> $out
           for u in .git/config build.py COMO-PUBLICAR.md content/imagens-pendentes.json netlify.toml _headers; do
             echo "$(curl -s -o /dev/null -w '%{http_code}' https://minutodereflexao.com/$u) /$u" >> $out; done
       - name: Testar páginas no navegador (bloqueios da política de segurança)
