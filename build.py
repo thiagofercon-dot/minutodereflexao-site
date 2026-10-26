@@ -388,6 +388,55 @@ def card(a):
   </div>
 </article>"""
 
+def sanitize_html(h):
+    """Remove do corpo dos artigos qualquer coisa que possa executar código (defesa extra)."""
+    h = re.sub(r"(?is)<\s*(script|iframe|object|embed|style|form|input|button|link|meta)\b.*?(</\s*\1\s*>|/?>)", "", h)
+    h = re.sub(r"(?i)\s+on[a-z]+\s*=\s*(\"[^\"]*\"|'[^']*'|[^\s>]+)", "", h)
+    h = re.sub(r"(?i)(href|src)\s*=\s*([\"'])\s*(javascript|data|vbscript):[^\"']*\2", r'\1="#"', h)
+    return h
+
+def write_security_files():
+    """Gera os cabeçalhos de segurança (_headers) com a política de conteúdo baseada nos scripts do site."""
+    import hashlib, base64
+    hashes = set()
+    for root, _, files in os.walk(OUT):
+        for fn in files:
+            if fn.endswith(".html"):
+                txt = open(os.path.join(root, fn), encoding="utf-8").read()
+                for attrs, code in re.findall(r"(?is)<script([^>]*)>(.*?)</script>", txt):
+                    if "src=" in attrs or "ld+json" in attrs:
+                        continue
+                    hashes.add("'sha256-" + base64.b64encode(hashlib.sha256(code.encode("utf-8")).digest()).decode() + "'")
+    csp = "; ".join([
+        "default-src 'self'",
+        "script-src 'self' " + " ".join(sorted(hashes)) + " https://www.googletagmanager.com https://connect.facebook.net",
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+        "font-src 'self' https://fonts.gstatic.com",
+        "img-src 'self' data: https://*.google-analytics.com https://*.googletagmanager.com https://www.google.com https://www.facebook.com",
+        "connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.google.com https://www.facebook.com https://connect.facebook.net",
+        "frame-src https://www.facebook.com",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+        "frame-ancestors 'none'",
+        "upgrade-insecure-requests",
+    ])
+    headers = f"""/*
+  Content-Security-Policy: {csp}
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()
+  Cross-Origin-Opener-Policy: same-origin
+  X-Permitted-Cross-Domain-Policies: none
+
+/assets/*
+  Cache-Control: public, max-age=604800
+"""
+    write("_headers", headers)
+    write("_redirects", "https://effervescent-madeleine-77e208.netlify.app/* https://minutodereflexao.com/:splat 301!\n"
+                        "http://effervescent-madeleine-77e208.netlify.app/* https://minutodereflexao.com/:splat 301!\n")
+
 def write(rel, content):
     p = os.path.join(OUT, rel)
     os.makedirs(os.path.dirname(p), exist_ok=True)
@@ -500,7 +549,7 @@ def build():
     for i, a in enumerate(ARTICLES):
         rest = [x for x in ARTICLES if x is not a]
         others = ([x for x in rest if x["tag"] == a["tag"]] + [x for x in rest if x["tag"] != a["tag"]])[:2]
-        body_html = (a["body"]
+        body_html = (sanitize_html(a["body"])
             .replace('href="EBOOK2_URL" target="_blank" rel="noopener"', 'href="/guias/gestao-do-tempo/"')
             .replace('href="EBOOK_URL" target="_blank" rel="noopener"', 'href="/guias/o-labirinto-do-proposito/"')
             .replace("EBOOK2_URL", "/guias/gestao-do-tempo/").replace("EBOOK_URL", "/guias/o-labirinto-do-proposito/"))
@@ -687,6 +736,7 @@ def build():
     sm += "</urlset>\n"
     write("sitemap.xml", sm)
     write("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n")
+    write_security_files()
 
 if __name__ == "__main__":
     build()

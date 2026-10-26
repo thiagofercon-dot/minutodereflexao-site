@@ -6,9 +6,11 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+concurrency: imagens
 jobs:
   baixar:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Baixar imagens exportadas do Canva
@@ -19,10 +21,16 @@ jobs:
           fila = json.load(open(p, encoding="utf-8")) if os.path.exists(p) else {}
           os.makedirs("static/assets/artigos", exist_ok=True)
           restantes = {}
+          import re
+          from urllib.parse import urlparse
+          HOSTS = ("export-download.canva.com", "document-export.canva.com", "hotmart.s3.amazonaws.com", "static-media.hotmart.com")
           for slug, url in fila.items():
               try:
+                  assert re.fullmatch(r"[a-z0-9-]+(/[a-z0-9-]+\.(jpg|png))?", slug), "nome de arquivo inválido"
+                  assert urlparse(url).scheme == "https" and urlparse(url).hostname in HOSTS, "origem não permitida"
                   data = urllib.request.urlopen(url, timeout=60).read()
-                  assert len(data) > 5000
+                  assert 5000 < len(data) < 10_000_000, "tamanho inesperado"
+                  assert data[:3] == b"\xff\xd8\xff" or data[:8] == b"\x89PNG\r\n\x1a\n", "não é imagem JPG/PNG"
                   dest = f"static/assets/{slug}" if "/" in slug else f"static/assets/artigos/{slug}.jpg"
                   os.makedirs(os.path.dirname(dest), exist_ok=True)
                   open(dest, "wb").write(data)
