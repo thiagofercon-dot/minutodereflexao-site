@@ -1,3 +1,17 @@
 [build]
   command = "python3 build.py"
   publish = "site"
+
+# Endereço técnico do Netlify redireciona para o domínio oficial (evita conteúdo duplicado no Google)
+[[redirects]]
+  from = "https://effervescent-madeleine-77e208.netlify.app/*"
+  to = "https://minutodereflexao.com/:splat"
+  status = 301
+  force = true
+
+# http://www vai direto para o domínio oficial em um único salto
+[[redirects]]
+  from = "http://www.minutodereflexao.com/*"
+  to = "https://minutodereflexao.com/:splat"
+  status = 301
+  force = true
