@@ -1,0 +1,22 @@
+name: Verificar site
+on:
+  push:
+    branches: [main]
+    paths: [".github/verificar-trigger"]
+permissions:
+  contents: write
+jobs:
+  checar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Cabeçalhos e redirecionamentos
+        run: |
+          sleep 75
+          out=content/verificacao.txt; : > $out
+          for u in https://minutodereflexao.com/ https://minutodereflexao.com/contato/ https://effervescent-madeleine-77e208.netlify.app/ https://minutodereflexao.com/assets/style.css; do
+            echo "== $u" >> $out; curl -sI "$u" >> $out; done
+          for u in https://minutodereflexao.com/.git/config https://minutodereflexao.com/build.py https://minutodereflexao.com/COMO-PUBLICAR.md https://minutodereflexao.com/content/imagens-pendentes.json https://minutodereflexao.com/netlify.toml; do
+            echo "$(curl -s -o /dev/null -w '%{http_code}' $u) $u" >> $out; done
+          git config user.name "Thiago Fernandes"; git config user.email "thiagofercon@gmail.com"
+          git add $out && git commit -m "Verificação do site" && git push
