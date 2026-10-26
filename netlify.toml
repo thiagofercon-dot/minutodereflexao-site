@@ -1,6 +1,8 @@
 [build]
   command = "python3 build.py"
   publish = "site"
+  # Só publica quando algo do site mudou (economiza publicações do plano gratuito)
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- build.py static content/articles content/guias netlify.toml"
 
 # Endereço técnico do Netlify redireciona para o domínio oficial (evita conteúdo duplicado no Google)
 [[redirects]]
