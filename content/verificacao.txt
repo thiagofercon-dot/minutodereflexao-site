@@ -1,0 +1,20 @@
+== https://minutodereflexao.com/
+HTTP/2 200 
+strict-transport-security: max-age=31536000
+== https://effervescent-madeleine-77e208.netlify.app/
+HTTP/2 200 
+strict-transport-security: max-age=31536000; includeSubDomains; preload
+== http://www.minutodereflexao.com/
+HTTP/1.1 301 Moved Permanently
+Location: https://www.minutodereflexao.com/
+404 /.git/config
+404 /build.py
+404 /COMO-PUBLICAR.md
+404 /content/imagens-pendentes.json
+404 /netlify.toml
+404 /_headers
+/ gtag=function gtm=true fbq=function bloqueios=0
+/blog/ gtag=function gtm=true fbq=function bloqueios=0
+/blog/como-parar-de-procrastinar/ gtag=function gtm=true fbq=function bloqueios=0
+/guias/gestao-do-tempo/ gtag=function gtm=true fbq=function bloqueios=0
+/contato/ gtag=function gtm=true fbq=function bloqueios=0
