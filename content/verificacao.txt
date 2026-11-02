@@ -125,7 +125,7 @@ if(window.gtag)gtag('event','begin_checkout',{items:[{item_name:n}]});});})();
 if(!b)return;b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);});})();
 </script>
 </body>
-</html> / esperado: 467e9c8d9e66575891e4348891e88958bd72f9fc
+</html> / esperado: f7a3c89ee76622fedbd4c800ff157537387f1586
 capa ebook: 404
 404 /.git/config
 404 /build.py
