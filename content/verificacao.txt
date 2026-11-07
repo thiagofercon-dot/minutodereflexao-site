@@ -1,6 +1,6 @@
-IP: 2a02:4780:4e:a4f2:a9d4:a8f2:d48:3969 minutodereflexao.com
-2a02:4780:4f:20cf:4afb:5973:5889:78d9 minutodereflexao.com
-versao publicada: 270d59cfc31074401bbc6676fa20b673bcedd4c7 / main: c6287143fc797dae7dae965b3ee57b80516792e0
+IP: 2a02:4780:4c:e74d:f56:2a34:d9fc:737f minutodereflexao.com
+2a02:4780:4d:f01a:2bd9:61b2:186:beed minutodereflexao.com
+versao publicada: b85451206ff20b755894fa8b4de867e36f361872 / main: a8a46933f72d1f1c37125117fb4574a2341bab4b
 == https://minutodereflexao.com/
 HTTP/2 200 
 content-security-policy: default-src 'self'; script-src 'self' 'sha256-+1REipfgYFncJ/zDFMfTmA7eJ1cPk5g/WQekvagDQpc=' 'sha256-/NZxsL4DfdSM/qs
@@ -35,6 +35,8 @@ x-content-type-options: nosniff
 referrer-policy: strict-origin-when-cross-origin
 permissions-policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()
 server: hcdn
+200 /blog/como-descobrir-o-que-gosto-de-fazer/
+200 /assets/artigos/como-descobrir-o-que-gosto-de-fazer.jpg
 200 /blog/como-manter-a-motivacao/
 200 /blog/como-ter-mais-autoconfianca/
 200 /guias/gestao-do-tempo/
