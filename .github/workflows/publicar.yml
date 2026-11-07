@@ -1,0 +1,39 @@
+name: Publicar na Hostinger
+on:
+  push:
+    branches: [main]
+    paths: ["build.py", "static/**", "content/articles/**", "content/guias/**", ".github/workflows/publicar.yml"]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency: publicar
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Gerar o site
+        run: COMMIT_REF=$GITHUB_SHA python3 build.py
+      - name: Atualizar o ramo "hostinger" (lido pela Hostinger)
+        run: |
+          git config user.name "Thiago Fernandes"
+          git config user.email "thiagofercon@gmail.com"
+          if git ls-remote --exit-code --heads origin hostinger >/dev/null; then
+            git fetch origin hostinger
+            git worktree add /tmp/pub origin/hostinger
+            (cd /tmp/pub && git checkout -B hostinger)
+          else
+            git worktree add --detach /tmp/pub
+            (cd /tmp/pub && git checkout --orphan hostinger && git rm -rfq .)
+          fi
+          find /tmp/pub -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a site/. /tmp/pub/
+          rm -f /tmp/pub/_headers /tmp/pub/_redirects
+          cd /tmp/pub
+          git add -A
+          git diff --cached --quiet && { echo "Nada mudou"; exit 0; }
+          git commit -qm "Site gerado a partir de ${GITHUB_SHA::7}"
+          git push origin hostinger

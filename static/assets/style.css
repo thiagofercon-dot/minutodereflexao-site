@@ -286,3 +286,4 @@ blockquote cite{display:block;margin-top:12px;font-style:normal;font-size:.75rem
 .sp-cover{display:block;width:100%;max-width:300px;height:auto;margin:18px auto 30px;border-radius:6px;box-shadow:0 30px 60px -25px rgba(0,0,0,.6)}
 .guide-cover{display:block}
 .guide-cover img{display:block;width:100%;height:auto;border-radius:4px;box-shadow:0 24px 50px -22px rgba(0,0,0,.55)}
+.form-erro{background:#fdecec;border:1px solid #f3b9b9;color:#8a1f1f;border-radius:var(--radius);padding:14px 18px;margin:0 0 20px}

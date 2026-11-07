@@ -205,6 +205,8 @@ bar.addEventListener('click',function(e){{var v=e.target.getAttribute('data-cons
 gtag('consent','update',{{analytics_storage:v}});bar.hidden=true;}});}})();
 </script>
 <script>
+(function(){{var tf=document.querySelector('input[name=t]');if(tf)tf.value=Math.floor(Date.now()/1000);
+if(/[?&]erro=1/.test(location.search)){{var fe=document.getElementById('form-erro');if(fe)fe.hidden=false;}}}})();
 (function(){{var pr=document.querySelector('[data-product]');
 if(pr&&window.fbq)fbq('track','ViewContent',{{content_name:pr.getAttribute('data-product'),content_type:'product'}});
 document.addEventListener('click',function(e){{var a=e.target.closest&&e.target.closest('a[data-checkout]');if(!a)return;var n=a.getAttribute('data-checkout');
@@ -434,6 +436,35 @@ def write_security_files():
   Cache-Control: public, max-age=604800
 """
     write("_headers", headers)
+    hdr_lines = []
+    for line in headers.split("/assets/*")[0].splitlines()[1:]:
+        if ":" in line:
+            k, v = line.strip().split(":", 1)
+            hdr_lines.append(f'  Header always set {k} "{v.strip()}"')
+    htaccess = f"""# Gerado por build.py (Hostinger / LiteSpeed)
+Options -Indexes
+DirectoryIndex index.html index.php
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # https e sem www, num único redirecionamento
+  RewriteCond %{{HTTPS}} off [OR]
+  RewriteCond %{{HTTP_HOST}} ^www\\. [NC]
+  RewriteRule ^(.*)$ https://minutodereflexao.com/$1 [R=301,L]
+  # Bloqueia arquivos ocultos (.git, .env etc.), exceto .well-known
+  RewriteRule (^|/)\\.(?!well-known/) - [F,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000"
+{chr(10).join(hdr_lines)}
+  <FilesMatch "\\.(jpg|jpeg|png|svg|css|webp)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
+"""
+    write(".htaccess", htaccess)
     write("_redirects", "https://effervescent-madeleine-77e208.netlify.app/* https://minutodereflexao.com/:splat 301!\n"
                         "http://effervescent-madeleine-77e208.netlify.app/* https://minutodereflexao.com/:splat 301!\n")
 
@@ -661,8 +692,9 @@ def build():
 </section>
 <section class="section">
   <div class="wrap narrow">
-    <form class="form" name="contato" method="POST" action="/obrigado/" data-netlify="true" netlify-honeypot="empresa">
-      <input type="hidden" name="form-name" value="contato">
+    <p class="form-erro" id="form-erro" hidden>Não foi possível enviar agora. Confira os campos e tente de novo, ou fale com a gente pelo Instagram.</p>
+    <form class="form" name="contato" method="POST" action="/contato/enviar.php">
+      <input type="hidden" name="t" value="">
       <p class="hidden"><label>Não preencha: <input name="empresa"></label></p>
       <label>Nome<input type="text" name="nome" required autocomplete="name"></label>
       <label>E-mail<input type="email" name="email" required autocomplete="email"></label>
