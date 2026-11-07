@@ -13,16 +13,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Esperar publicação
-        run: sleep 150
+        run: sleep 20
       - name: Cabeçalhos, redirecionamentos e arquivos internos
         run: |
           out=content/verificacao.txt; : > $out
-          for u in https://minutodereflexao.com/ https://effervescent-madeleine-77e208.netlify.app/ http://www.minutodereflexao.com/; do
-            echo "== $u" >> $out; curl -sI "$u" | grep -iE '^(HTTP|location|content-security|x-frame|x-content|referrer|permissions|strict|cross-origin)' >> $out; done
-          echo "versao publicada: $(curl -s https://minutodereflexao.com/versao.txt) / esperado: $GITHUB_SHA" >> $out
-          echo "capa ebook: $(curl -s -o /dev/null -w '%{http_code}' https://minutodereflexao.com/assets/ebooks/gestao-do-tempo.jpg)" >> $out
-          for u in .git/config build.py COMO-PUBLICAR.md content/imagens-pendentes.json netlify.toml _headers; do
+          echo "IP: $(getent hosts minutodereflexao.com)" >> $out
+          echo "versao publicada: $(curl -s https://minutodereflexao.com/versao.txt) / main: $GITHUB_SHA" >> $out
+          for u in https://minutodereflexao.com/ http://minutodereflexao.com/ https://www.minutodereflexao.com/blog/ https://minutodereflexao.com/blog; do
+            echo "== $u" >> $out; curl -sI "$u" | grep -iE '^(HTTP|location|server|content-security|x-frame|x-content|referrer|permissions|strict)' | cut -c1-140 >> $out; done
+          for u in blog/como-manter-a-motivacao/ blog/como-ter-mais-autoconfianca/ guias/gestao-do-tempo/ assets/ebooks/gestao-do-tempo.jpg assets/thiago-fernandes.jpg blog/tema/proposito/ sitemap.xml pagina-que-nao-existe/ .git/config .htaccess build.py; do
             echo "$(curl -s -o /dev/null -w '%{http_code}' https://minutodereflexao.com/$u) /$u" >> $out; done
+          echo "formulario GET: $(curl -s -o /dev/null -w '%{http_code}' https://minutodereflexao.com/contato/enviar.php)" >> $out
+          echo "formulario robo: $(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' -d 'empresa=x' https://minutodereflexao.com/contato/enviar.php)" >> $out
       - name: Testar páginas no navegador (bloqueios da política de segurança)
         run: |
           npm i -s playwright@1.56.1 >/dev/null && npx playwright install --with-deps chromium >/dev/null 2>&1
