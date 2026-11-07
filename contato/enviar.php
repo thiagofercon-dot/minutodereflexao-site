@@ -12,6 +12,9 @@ function voltar($status) {
 }
 
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') { http_response_code(405); exit; }
+// Aceita so envios vindos do proprio site (bloqueia formularios automatizados a partir de outros dominios)
+$origem = $_SERVER['HTTP_ORIGIN'] ?? $_SERVER['HTTP_REFERER'] ?? '';
+if ($origem !== '' && !preg_match('#^https://(www\.)?minutodereflexao\.com(/|$)#i', $origem)) { http_response_code(403); exit; }
 
 // Robôs costumam preencher o campo escondido "empresa"
 if (!empty($_POST['empresa'])) { voltar('ok'); }
