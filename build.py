@@ -5,6 +5,9 @@ import os, re, json, html, datetime, shutil
 SITE = "https://minutodereflexao.com"
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "site")
+# Usado como ?v= no CSS para forçar o navegador a buscar a versão nova
+# mesmo com o cache de 7 dias configurado no .htaccess (ver site/.htaccess).
+ASSET_VERSION = (os.environ.get("COMMIT_REF") or "local")[:7]
 IG = "https://www.instagram.com/minutodereflexao.comm/"
 FB = "https://www.facebook.com/search/top?q=Minuto%20de%20Reflex%C3%A3o"
 YT = "https://www.youtube.com/@minutodereflexaoBr"
@@ -128,7 +131,7 @@ def page(path, title, desc, body, active="", og_type="website", extra_head="", o
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Sora:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css">
+<link rel="stylesheet" href="/assets/style.css?v={ASSET_VERSION}">
 <script>
 window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}
 var mdrConsent=null;try{{mdrConsent=localStorage.getItem('mdr_consent');}}catch(e){{}}
