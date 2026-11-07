@@ -21,7 +21,7 @@ jobs:
           echo "versao publicada: $(curl -s https://minutodereflexao.com/versao.txt) / main: $GITHUB_SHA" >> $out
           for u in https://minutodereflexao.com/ http://minutodereflexao.com/ https://www.minutodereflexao.com/blog/ https://minutodereflexao.com/blog; do
             echo "== $u" >> $out; curl -sI "$u" | grep -iE '^(HTTP|location|server|content-security|x-frame|x-content|referrer|permissions|strict)' | cut -c1-140 >> $out; done
-          for u in blog/como-manter-a-motivacao/ blog/como-ter-mais-autoconfianca/ guias/gestao-do-tempo/ assets/ebooks/gestao-do-tempo.jpg assets/thiago-fernandes.jpg blog/tema/proposito/ sitemap.xml pagina-que-nao-existe/ .git/config .htaccess build.py; do
+          for u in blog/como-descobrir-o-que-gosto-de-fazer/ assets/artigos/como-descobrir-o-que-gosto-de-fazer.jpg blog/como-manter-a-motivacao/ blog/como-ter-mais-autoconfianca/ guias/gestao-do-tempo/ assets/ebooks/gestao-do-tempo.jpg assets/thiago-fernandes.jpg blog/tema/proposito/ sitemap.xml pagina-que-nao-existe/ .git/config .htaccess build.py; do
             echo "$(curl -s -o /dev/null -w '%{http_code}' https://minutodereflexao.com/$u) /$u" >> $out; done
           echo "formulario GET: $(curl -s -o /dev/null -w '%{http_code}' https://minutodereflexao.com/contato/enviar.php)" >> $out
           echo "formulario robo: $(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' -d 'empresa=x' https://minutodereflexao.com/contato/enviar.php)" >> $out
