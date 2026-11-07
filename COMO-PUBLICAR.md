@@ -1,7 +1,10 @@
 # Site Minuto de Reflexão (minutodereflexao.com)
 
-Site estático gerado por `build.py` (Python 3, sem dependências) e publicado pelo Netlify
-a cada commit na branch `main` (comando `python3 build.py`, pasta publicada `site/`).
+Site estático gerado por `build.py` (Python 3, sem dependências) e hospedado na Hostinger.
+A cada commit na branch `main`, a rotina do GitHub (`.github/workflows/publicar.yml`) roda
+`python3 build.py` e grava o resultado na branch `hostinger`. A Hostinger publica essa branch
+sozinha na pasta `public_html` (implantação automática pelo Git, no hPanel).
+O formulário de contato usa `static/contato/enviar.php`, que envia o e-mail pelo servidor da Hostinger.
 
 ## Publicar um artigo novo
 
@@ -14,7 +17,7 @@ Crie um arquivo em `content/articles/AAAA-MM-DD-slug.json`:
   "desc": "Resumo de 1 a 2 frases (até ~160 caracteres), usado no Google e nos cards.",
   "tag": "Motivação | Propósito | Superação | Desenvolvimento pessoal",
   "date": "AAAA-MM-DD",
-  "time": "HH:MM (horário de Brasília da publicação, aparece no site como \"Publicado em ... às 9h55\")",
+  "time": "HH:MM (horário de Brasília, só para controle; o site mostra apenas a data)",
   "quote": "Frase de destaque curta (até ~60 caracteres), aparece na capa do card.",
   "keyword": "palavra-chave principal de cauda longa (não aparece no site, serve de controle)",
   "body": "<p>...</p><h2>...</h2><h3>...</h3><blockquote>...</blockquote>",

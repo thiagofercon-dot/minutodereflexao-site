@@ -398,7 +398,7 @@ def sanitize_html(h):
     return h
 
 def write_security_files():
-    """Gera os cabeçalhos de segurança (_headers) com a política de conteúdo baseada nos scripts do site."""
+    """Gera os cabeçalhos de segurança (.htaccess) com a política de conteúdo baseada nos scripts do site."""
     import hashlib, base64
     hashes = set()
     for root, _, files in os.walk(OUT):
@@ -435,7 +435,6 @@ def write_security_files():
 /assets/*
   Cache-Control: public, max-age=604800
 """
-    write("_headers", headers)
     hdr_lines = []
     for line in headers.split("/assets/*")[0].splitlines()[1:]:
         if ":" in line:
@@ -465,8 +464,6 @@ ErrorDocument 404 /404.html
 </IfModule>
 """
     write(".htaccess", htaccess)
-    write("_redirects", "https://effervescent-madeleine-77e208.netlify.app/* https://minutodereflexao.com/:splat 301!\n"
-                        "http://effervescent-madeleine-77e208.netlify.app/* https://minutodereflexao.com/:splat 301!\n")
 
 def write(rel, content):
     p = os.path.join(OUT, rel)
