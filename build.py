@@ -377,15 +377,15 @@ def card(a):
                  f'<img src="{img}" alt="" loading="lazy" width="1200" height="630"></a>')
     else:
         cover = f"""<a class="card-cover {a['cover']}" href="/blog/{a['slug']}/" aria-hidden="true" tabindex="-1">
-    <span class="mono card-cover-tag">{a['tag']}</span>
-    <span class="card-cover-quote">“{a['quote']}”</span>
+    <span class="mono card-cover-tag">{html.escape(a['tag'])}</span>
+    <span class="card-cover-quote">“{html.escape(a['quote'])}”</span>
   </a>"""
     return f"""<article class="card">
   {cover}
   <div class="card-body">
-    <p class="mono meta"><a href="{tema_url(a['tag'])}">{a['tag']}</a> · <time datetime="{a['date']}">{publicado(a, True)}</time></p>
-    <h3><a href="/blog/{a['slug']}/">{a['title']}</a></h3>
-    <p>{a['desc']}</p>
+    <p class="mono meta"><a href="{tema_url(a['tag'])}">{html.escape(a['tag'])}</a> · <time datetime="{a['date']}">{publicado(a, True)}</time></p>
+    <h3><a href="/blog/{a['slug']}/">{html.escape(a['title'])}</a></h3>
+    <p>{html.escape(a['desc'])}</p>
     <a class="link-arrow" href="/blog/{a['slug']}/">Ler artigo <span aria-hidden="true">→</span></a>
   </div>
 </article>"""
@@ -430,6 +430,7 @@ def write_security_files():
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), magnetometer=(), gyroscope=(), accelerometer=()
   Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
   X-Permitted-Cross-Domain-Policies: none
 
 /assets/*
@@ -601,8 +602,8 @@ def build():
 <article class="post">
   <header class="post-hero {a['cover']}">
     <div class="wrap narrow">
-      <p class="mono kicker"><a href="/blog/">Artigos</a> · <a href="{tema_url(a['tag'])}">{a['tag']}</a></p>
-      <h1 class="post-title">{a['title']}</h1>
+      <p class="mono kicker"><a href="/blog/">Artigos</a> · <a href="{tema_url(a['tag'])}">{html.escape(a['tag'])}</a></p>
+      <h1 class="post-title">{html.escape(a['title'])}</h1>
       <p class="mono post-meta">Por {AUTHOR} · Publicado em <time datetime="{a['date']}">{publicado(a)}</time>{(' · Atualizado em ' + data_br(a['updated'])) if a.get('updated') else ''} · {a['read']} min de leitura</p>
     </div>
   </header>
