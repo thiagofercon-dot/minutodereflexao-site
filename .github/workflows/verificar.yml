@@ -26,6 +26,7 @@ jobs:
           echo "formulario GET: $(curl -s -o /dev/null -w '%{http_code}' https://minutodereflexao.com/contato/enviar.php)" >> $out
           echo "formulario robo: $(curl -s -o /dev/null -w '%{http_code} %{redirect_url}' -d 'empresa=x' https://minutodereflexao.com/contato/enviar.php)" >> $out
       - name: Testar páginas no navegador (bloqueios da política de segurança)
+        continue-on-error: true
         run: |
           npm i -s playwright@1.56.1 >/dev/null && npx playwright install --with-deps chromium >/dev/null 2>&1
           cat > check.js <<'JS'
@@ -47,8 +48,9 @@ jobs:
             await b.close();
           })();
           JS
-          node check.js | tee -a content/verificacao.txt
+          node check.js 2>&1 | tail -30 | tee -a content/verificacao.txt
       - name: Salvar resultado
+        if: always()
         run: |
           git config user.name "Thiago Fernandes"; git config user.email "thiagofercon@gmail.com"
           git add content/verificacao.txt && git commit -m "Verificação do site" && git pull --rebase && git push
