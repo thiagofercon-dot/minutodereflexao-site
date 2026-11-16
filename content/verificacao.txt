@@ -1,6 +1,6 @@
-IP: 2a02:4780:4a:a28b:df01:1ca5:17f0:d74e minutodereflexao.com
-2a02:4780:4d:c32f:c649:1784:f528:843a minutodereflexao.com
-versao publicada: e5c58e20299a9dc432cc29d59bd8b912566f7ca4 / main: f410ecc1ab3a3a0548e5980748fb2d56db412da4
+IP: 2a02:4780:1e:e3e7:d826:89b9:a103:6c6f minutodereflexao.com
+2a02:4780:21:919e:a5d4:f9c0:6bcf:6dd8 minutodereflexao.com
+versao publicada: 2e133451f65f65dc09c811d2b09a001561346be7 / main: fc35bb60a3d6ca462b8e9f0084a83a2dcdbdec6b
 == https://minutodereflexao.com/
 HTTP/2 200 
 content-security-policy: default-src 'self'; script-src 'self' 'sha256-+1REipfgYFncJ/zDFMfTmA7eJ1cPk5g/WQekvagDQpc=' 'sha256-/NZxsL4DfdSM/qs
