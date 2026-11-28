@@ -159,6 +159,7 @@ src="https://www.facebook.com/tr?id=2184221455784624&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
 </head>
 <body>
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 <header class="site-header">
   <div class="wrap header-inner">
@@ -220,6 +221,33 @@ if(window.gtag)gtag('event','begin_checkout',{{items:[{{item_name:n}}]}});}});}}
 <script>
 (function(){{var b=document.querySelector('.menu-toggle'),n=document.getElementById('menu');
 if(!b)return;b.addEventListener('click',function(){{var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);}});}})();
+</script>
+<script>
+(function(){{
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els=document.querySelectorAll('.reveal');
+  if(!els.length)return;
+  if(reduce||!('IntersectionObserver' in window)){{els.forEach(function(el){{el.classList.add('is-visible');}});return;}}
+  var io=new IntersectionObserver(function(entries){{
+    entries.forEach(function(e){{if(e.isIntersecting){{e.target.classList.add('is-visible');io.unobserve(e.target);}}}});
+  }},{{threshold:0,rootMargin:'0px 0px -60px 0px'}});
+  els.forEach(function(el){{io.observe(el);}});
+}})();
+</script>
+<script>
+(function(){{
+  var bar=document.getElementById('progress-bar'),post=document.querySelector('.post-body');
+  if(!bar||!post)return;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  bar.hidden=false;
+  function upd(){{
+    var start=post.offsetTop,total=post.offsetHeight-(window.innerHeight*.5);
+    var pct=total>0?Math.min(100,Math.max(0,((window.scrollY-start+window.innerHeight)/total)*100)):0;
+    bar.style.width=pct+'%';
+  }}
+  if(reduce){{bar.style.transition='none';}}
+  upd();window.addEventListener('scroll',upd,{{passive:true}});window.addEventListener('resize',upd);
+}})();
 </script>
 </body>
 </html>
@@ -394,6 +422,27 @@ def card(a):
   </div>
 </article>"""
 
+def feature_card(a):
+    """Card grande e horizontal para destacar o artigo mais recente (home e /blog/)."""
+    img = article_img(a)
+    if img:
+        cover = (f'<a class="feature-cover" href="/blog/{a["slug"]}/" aria-hidden="true" tabindex="-1">'
+                 f'<img src="{img}" alt="" loading="lazy" width="1200" height="900"></a>')
+    else:
+        cover = f"""<a class="feature-cover {a['cover']}" href="/blog/{a['slug']}/" aria-hidden="true" tabindex="-1">
+    <span class="mono card-cover-tag">{html.escape(a['tag'])}</span>
+    <span class="card-cover-quote">“{html.escape(a['quote'])}”</span>
+  </a>"""
+    return f"""<article class="feature-post reveal">
+  {cover}
+  <div class="feature-body">
+    <p class="mono meta"><a href="{tema_url(a['tag'])}">{html.escape(a['tag'])}</a> · <time datetime="{a['date']}">{publicado(a, True)}</time></p>
+    <h2><a href="/blog/{a['slug']}/">{html.escape(a['title'])}</a></h2>
+    <p>{html.escape(a['desc'])}</p>
+    <a class="link-arrow" href="/blog/{a['slug']}/">Ler artigo <span aria-hidden="true">→</span></a>
+  </div>
+</article>"""
+
 def sanitize_html(h):
     """Remove do corpo dos artigos qualquer coisa que possa executar código (defesa extra)."""
     h = re.sub(r"(?is)<\s*(script|iframe|object|embed|style|form|input|button|link|meta)\b.*?(</\s*\1\s*>|/?>)", "", h)
@@ -479,46 +528,60 @@ def write(rel, content):
 def build():
     shutil.rmtree(OUT, ignore_errors=True)
     shutil.copytree(os.path.join(ROOT, "static"), OUT)
-    cards = "\n".join(card(a) for a in ARTICLES[:3])
-    all_cards = "\n".join(card(a) for a in ARTICLES)
+    latest = ARTICLES[0] if ARTICLES else None
+    feature_home = feature_card(latest) if latest else ""
+    cards = "\n".join(card(a) for a in ARTICLES[1:3])
+    all_cards = "\n".join(card(a) for a in ARTICLES[1:])
+
+    hero_feature = f"""<div class="hero-feature hero-anim" style="animation-delay:.3s">
+      <p class="mono hero-feature-kicker">Reflexão de hoje</p>
+      <p class="hero-feature-quote">“{html.escape(latest['quote'])}”</p>
+      <a class="hero-feature-link" href="/blog/{latest['slug']}/">{html.escape(latest['title'])} <span aria-hidden="true">→</span></a>
+    </div>""" if latest else ""
 
     home = f"""
 <section class="hero">
   <div class="hero-waves" aria-hidden="true"></div>
   <div class="wrap hero-inner">
-    <p class="mono kicker">Encontre sua força interior</p>
-    <h1 class="display">Um minuto para pensar.<br>Uma vida para mudar.</h1>
-    <p class="lead">Reflexões curtas e práticas sobre motivação, propósito, superação e desenvolvimento pessoal, para você seguir em frente, um dia de cada vez.</p>
-    <div class="hero-actions">
-      <a class="btn btn-light" href="/blog/">Ler os artigos</a>
-      <a class="btn btn-ghost" href="{IG}" target="_blank" rel="noopener">Seguir no Instagram</a>
+    <div class="hero-grid">
+      <div class="hero-main">
+        <p class="mono kicker hero-anim" style="animation-delay:.05s">Encontre sua força interior</p>
+        <h1 class="display hero-anim" style="animation-delay:.15s">Um minuto para pensar.<br>Uma vida para mudar.</h1>
+        <p class="lead hero-anim" style="animation-delay:.25s">Reflexões curtas e práticas sobre motivação, propósito, superação e desenvolvimento pessoal, para você seguir em frente, um dia de cada vez.</p>
+        <div class="hero-actions hero-anim" style="animation-delay:.35s">
+          <a class="btn btn-light" href="/blog/">Ler os artigos</a>
+          <a class="btn btn-ghost" href="{IG}" target="_blank" rel="noopener">Seguir no Instagram</a>
+        </div>
+        <p class="mono hero-handle hero-anim" style="animation-delay:.45s">{BRAND} {HANDLE}</p>
+      </div>
+      {hero_feature}
     </div>
-    <p class="mono hero-handle">{BRAND} {HANDLE}</p>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="mono kicker dark">Últimas reflexões</p>
       <h2 class="title">Do blog</h2>
     </div>
-    <div class="grid">{cards}</div>
+    {feature_home}
+    <div class="grid grid-2 reveal">{cards}</div>
     <p class="center"><a class="btn btn-primary" href="/blog/">Ver todos os artigos</a></p>
   </div>
 </section>
 
 <section class="section section-mist">
   <div class="wrap pillars">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="mono kicker dark">Sobre o que falamos</p>
       <h2 class="title">Quatro caminhos para evoluir</h2>
     </div>
-    <div class="pillar-grid">
-      <div class="pillar"><span class="mono">01</span><h3>Motivação</h3><p>Como começar, e principalmente como continuar quando a vontade some.</p></div>
-      <div class="pillar"><span class="mono">02</span><h3>Propósito</h3><p>Encontrar direção e sentido mesmo quando tudo parece confuso.</p></div>
-      <div class="pillar"><span class="mono">03</span><h3>Superação</h3><p>Levantar depois das quedas e transformar dor em aprendizado.</p></div>
-      <div class="pillar"><span class="mono">04</span><h3>Desenvolvimento pessoal</h3><p>Pequenos ajustes diários que mudam quem você é ao longo do tempo.</p></div>
+    <div class="path-list reveal">
+      <a class="path-row" href="/blog/tema/motivacao/"><span class="path-mark" aria-hidden="true">M</span><span class="path-text"><h3>Motivação</h3><p>Como começar, e principalmente como continuar quando a vontade some.</p></span><span class="path-arrow" aria-hidden="true">→</span></a>
+      <a class="path-row" href="/blog/tema/proposito/"><span class="path-mark" aria-hidden="true">P</span><span class="path-text"><h3>Propósito</h3><p>Encontrar direção e sentido mesmo quando tudo parece confuso.</p></span><span class="path-arrow" aria-hidden="true">→</span></a>
+      <a class="path-row" href="/blog/tema/superacao/"><span class="path-mark" aria-hidden="true">S</span><span class="path-text"><h3>Superação</h3><p>Levantar depois das quedas e transformar dor em aprendizado.</p></span><span class="path-arrow" aria-hidden="true">→</span></a>
+      <a class="path-row" href="/blog/tema/desenvolvimento-pessoal/"><span class="path-mark" aria-hidden="true">D</span><span class="path-text"><h3>Desenvolvimento pessoal</h3><p>Pequenos ajustes diários que mudam quem você é ao longo do tempo.</p></span><span class="path-arrow" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
@@ -532,7 +595,7 @@ def build():
 </section>
 
 <section class="section">
-  <div class="wrap community">
+  <div class="wrap community reveal">
     <p class="mono kicker dark">Reflexão do dia</p>
     <p class="big-quote">“Não espere a motivação. Comece, e ela aparece no caminho.”</p>
     <p>Todos os dias tem uma reflexão nova no nosso Instagram e no canal do YouTube. Venha fazer parte.</p>
@@ -553,7 +616,7 @@ def build():
   </div>
 </section>
 <section class="section">
-  <div class="wrap">{temas_nav()}<div class="grid">{all_cards}</div></div>
+  <div class="wrap">{temas_nav()}{feature_home}<div class="grid reveal">{all_cards}</div></div>
 </section>
 """
     write("blog/index.html", page("/blog/", "Artigos",
@@ -573,7 +636,7 @@ def build():
   </div>
 </section>
 <section class="section">
-  <div class="wrap">{temas_nav(tag)}<div class="grid">{cards}</div></div>
+  <div class="wrap">{temas_nav(tag)}<div class="grid reveal">{cards}</div></div>
 </section>
 """
         write(f"blog/tema/{tslug}/index.html", page(f"/blog/tema/{tslug}/", f"Artigos sobre {tag.lower()}",
@@ -636,8 +699,8 @@ def build():
 </article>
 <section class="section section-mist">
   <div class="wrap">
-    <div class="section-head"><p class="mono kicker dark">Continue lendo</p><h2 class="title">Outras reflexões</h2></div>
-    <div class="grid grid-2">{''.join(card(o) for o in others)}</div>
+    <div class="section-head reveal"><p class="mono kicker dark">Continue lendo</p><h2 class="title">Outras reflexões</h2></div>
+    <div class="grid grid-2 reveal">{''.join(card(o) for o in others)}</div>
   </div>
 </section>
 """
