@@ -12,7 +12,8 @@
   --line:#E4EAF2;
   --radius:8px;
   --radius-sm:4px;
-  --display:"Italiana", "Times New Roman", serif;
+  --display:"Cormorant Garamond", "Playfair Display", Georgia, serif;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
   --sans:"Sora", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 *{box-sizing:border-box}
@@ -21,6 +22,11 @@ body{margin:0;font-family:var(--sans);font-weight:300;color:var(--text);backgrou
 img{max-width:100%}
 a{color:var(--navy);text-decoration:none}
 .prose a,.form-erro a,.card-body p a{text-decoration:underline;text-underline-offset:3px}
+
+/* corpo de texto editorial, mesma fonte serifada dos e-books da Editora Prumo */
+.lead,.prose p,.post-body p,.card-body p,.feature-body p,.path-text p,.guide p,
+.sp-guarantee p,.sp-author p,.author-box p,.sp-chapter p,.sp-fit-box li,
+.sp-summary,.community p,.sp-faq details p{font-family:var(--serif)}
 .wrap{max-width:1140px;margin:0 auto;padding:0 20px}
 .narrow{max-width:740px}
 .mono{font-family:var(--sans);letter-spacing:.02em;font-weight:500}
