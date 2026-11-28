@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css?v=d0985d0">
+<link rel="stylesheet" href="/assets/style.css?v=156f154">
 <script>
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
 var mdrConsent=null;try{mdrConsent=localStorage.getItem('mdr_consent');}catch(e){}
@@ -47,6 +47,7 @@ src="https://www.facebook.com/tr?id=2184221455784624&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
 </head>
 <body>
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 <header class="site-header">
   <div class="wrap header-inner">
@@ -72,7 +73,7 @@ src="https://www.facebook.com/tr?id=2184221455784624&ev=PageView&noscript=1"
   </div>
 </section>
 <section class="section">
-  <div class="wrap"><nav class="temas" aria-label="Temas"><a href="/blog/">Todos</a><a href="/blog/tema/motivacao/">Motivação</a><a href="/blog/tema/proposito/" aria-current="page">Propósito</a><a href="/blog/tema/superacao/">Superação</a><a href="/blog/tema/desenvolvimento-pessoal/">Desenvolvimento pessoal</a></nav><div class="grid"><article class="card">
+  <div class="wrap"><nav class="temas" aria-label="Temas"><a href="/blog/">Todos</a><a href="/blog/tema/motivacao/">Motivação</a><a href="/blog/tema/proposito/" aria-current="page">Propósito</a><a href="/blog/tema/superacao/">Superação</a><a href="/blog/tema/desenvolvimento-pessoal/">Desenvolvimento pessoal</a></nav><div class="grid reveal"><article class="card">
   <a class="card-cover card-img" href="/blog/como-descobrir-seus-valores-pessoais/" aria-hidden="true" tabindex="-1"><img src="/assets/artigos/como-descobrir-seus-valores-pessoais.jpg" alt="" loading="lazy" width="1200" height="630"></a>
   <div class="card-body">
     <p class="mono meta"><a href="/blog/tema/proposito/">Propósito</a> · <time datetime="2026-11-25">25/11/2026</time></p>
@@ -168,6 +169,33 @@ if(window.gtag)gtag('event','begin_checkout',{items:[{item_name:n}]});});})();
 <script>
 (function(){var b=document.querySelector('.menu-toggle'),n=document.getElementById('menu');
 if(!b)return;b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);});})();
+</script>
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els=document.querySelectorAll('.reveal');
+  if(!els.length)return;
+  if(reduce||!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('is-visible');});return;}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target);}});
+  },{threshold:0,rootMargin:'0px 0px -60px 0px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
+<script>
+(function(){
+  var bar=document.getElementById('progress-bar'),post=document.querySelector('.post-body');
+  if(!bar||!post)return;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  bar.hidden=false;
+  function upd(){
+    var start=post.offsetTop,total=post.offsetHeight-(window.innerHeight*.5);
+    var pct=total>0?Math.min(100,Math.max(0,((window.scrollY-start+window.innerHeight)/total)*100)):0;
+    bar.style.width=pct+'%';
+  }
+  if(reduce){bar.style.transition='none';}
+  upd();window.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);
+})();
 </script>
 </body>
 </html>

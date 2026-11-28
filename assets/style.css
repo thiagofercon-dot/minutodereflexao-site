@@ -59,6 +59,7 @@ a{color:var(--navy);text-decoration:none}
 .hero{position:relative;overflow:hidden;background:var(--navy);color:#fff;padding:128px 0 112px}
 .hero-waves{position:absolute;inset:0;background:linear-gradient(165deg,var(--navy) 55%,var(--navy-deep))}
 .hero-inner{position:relative}
+.hero-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:64px;align-items:center}
 .kicker{font-size:.86rem;color:var(--sky);margin:0 0 18px;font-weight:500}
 .kicker.dark{color:var(--blue)}
 .kicker a{color:inherit}
@@ -67,6 +68,27 @@ a{color:var(--navy);text-decoration:none}
 .lead.dark{color:var(--text)}
 .hero-actions{display:flex;flex-wrap:wrap;gap:16px;margin-top:36px}
 .hero-handle{margin-top:60px;font-size:.82rem;color:rgba(255,255,255,.6)}
+
+/* destaque de reflexão ao lado do hero */
+.hero-feature{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);border-radius:var(--radius);padding:38px 34px}
+.hero-feature-kicker{font-size:.8rem;color:var(--sky);margin:0 0 16px;font-weight:500}
+.hero-feature-quote{font-family:var(--display);font-size:1.45rem;line-height:1.4;color:#fff;margin:0 0 24px}
+.hero-feature-link{color:var(--sky);font-weight:500;font-size:.95rem;text-decoration:none}
+.hero-feature-link:hover{text-decoration:underline;text-underline-offset:3px}
+
+/* entrada animada do hero (um único momento orquestrado, respeita reduced-motion) */
+.hero-anim{opacity:0;transform:translateY(14px);animation:hero-in .7s ease forwards}
+@media (prefers-reduced-motion:reduce){.hero-anim{opacity:1;transform:none;animation:none}}
+@keyframes hero-in{to{opacity:1;transform:none}}
+
+/* revela conteúdo ao rolar a página (um bloco por vez, não card a card) */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.reveal.is-visible{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.reveal{transition:none;opacity:1;transform:none}}
+
+/* barra de progresso de leitura (artigos) */
+.progress-bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--blue);z-index:70;transition:width .1s linear}
+@media (prefers-reduced-motion:reduce){.progress-bar{transition:none}}
 
 .page-hero{background:var(--navy-deep);color:#fff;padding:102px 0 86px}
 .page-hero .wrap{position:relative;z-index:1}
@@ -98,13 +120,29 @@ a{color:var(--navy);text-decoration:none}
 .meta{font-size:.8rem;color:var(--blue);margin:0!important;font-weight:500}
 .link-arrow{margin-top:auto;font-weight:500;text-decoration:none;font-size:.93rem;color:var(--navy)}
 .link-arrow:hover{text-decoration:underline;text-underline-offset:3px}
+.link-arrow span{display:inline-block;transition:transform .2s ease}
+.link-arrow:hover span{transform:translateX(4px)}
 
-/* pillars */
-.pillar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
-.pillar{border-top:1px solid var(--line);padding:24px 0 0}
-.pillar span{font-family:var(--display);font-size:1.15rem;color:var(--blue)}
-.pillar h3{font-weight:500;color:var(--ink);margin:14px 0 8px;font-size:1.12rem}
-.pillar p{margin:0;font-size:.95rem;color:var(--muted)}
+/* destaque do artigo mais recente (home e /blog/) */
+.feature-post{display:grid;grid-template-columns:1.05fr 1fr;gap:52px;align-items:center;margin-bottom:56px}
+.feature-cover{display:block;aspect-ratio:1200/630;border-radius:var(--radius);overflow:hidden;text-decoration:none;color:#fff}
+.feature-cover img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease}
+.feature-post:hover .feature-cover img{transform:scale(1.035)}
+a.feature-cover.c1,a.feature-cover.c2,a.feature-cover.c3{display:flex;flex-direction:column;justify-content:space-between;padding:32px}
+.feature-body h2{font-family:var(--display);font-weight:400;font-size:clamp(1.5rem,2.6vw,2.05rem);line-height:1.22;margin:10px 0 14px;color:var(--ink)}
+.feature-body h2 a{color:inherit;text-decoration:none}
+.feature-body h2 a:hover{text-decoration:underline;text-underline-offset:4px}
+.feature-body p{margin:0 0 20px;color:var(--text)}
+
+/* quatro caminhos: lista editorial, cada linha leva ao tema */
+.path-list{border-top:1px solid var(--line)}
+.path-row{display:grid;grid-template-columns:56px 1fr 24px;gap:28px;align-items:center;padding:30px 0;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;transition:padding-left .25s ease}
+.path-row:hover{padding-left:10px}
+.path-mark{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--blue);color:var(--navy-deep);font-family:var(--display);font-size:1.2rem}
+.path-text h3{font-weight:500;color:var(--ink);margin:0 0 6px;font-size:1.12rem}
+.path-text p{margin:0;font-size:.95rem;color:var(--muted)}
+.path-arrow{opacity:0;color:var(--navy);transition:opacity .25s ease,transform .25s ease;transform:translateX(-4px)}
+.path-row:hover .path-arrow{opacity:1;transform:none}
 
 /* ebook */
 .ebook{background:var(--navy);color:#fff}
@@ -170,21 +208,24 @@ blockquote{margin:44px 0;padding:4px 0 4px 28px;border-left:3px solid var(--sky)
 /* responsive */
 @media (max-width:960px){
   .grid{grid-template-columns:repeat(2,1fr)}
-  .pillar-grid{grid-template-columns:repeat(2,1fr)}
   .ebook-inner{grid-template-columns:1fr;gap:40px}
   .ebook-cover{max-width:260px}
+  .hero-grid{grid-template-columns:1fr;gap:40px}
+  .feature-post{grid-template-columns:1fr;gap:28px}
 }
 @media (max-width:760px){
   body{font-size:16px}
   .menu-toggle{display:flex}
-  .nav{position:absolute;top:72px;left:0;right:0;background:var(--navy-deep);flex-direction:column;align-items:flex-start;gap:0;padding:8px 20px 20px;display:none}
-  .nav.open{display:flex}
+  .nav{position:absolute;top:72px;left:0;right:0;background:var(--navy-deep);flex-direction:column;align-items:flex-start;gap:0;padding:0 20px;max-height:0;overflow:hidden;display:flex;transition:max-height .3s ease,padding .3s ease}
+  .nav.open{max-height:420px;padding:8px 20px 20px}
   .nav a{padding:14px 0;width:100%;border-bottom:1px solid rgba(255,255,255,.08)}
   .nav a[aria-current="page"]{border-bottom:1px solid rgba(255,255,255,.08);color:var(--sky)}
   .nav .btn-small{margin-top:16px;width:auto;text-align:center;border-bottom:1px solid rgba(255,255,255,.4)}
   .hero{padding:92px 0 86px}
   .section{padding:68px 0}
-  .grid,.grid-2,.pillar-grid,.footer-grid{grid-template-columns:1fr}
+  .grid,.grid-2,.footer-grid{grid-template-columns:1fr}
+  .path-row{grid-template-columns:40px 1fr;gap:18px}
+  .path-arrow{display:none}
   blockquote{font-size:1.3rem;padding:4px 0 4px 20px}
 }
 .faq{margin-top:52px;padding-top:12px;border-top:1px solid var(--line)}

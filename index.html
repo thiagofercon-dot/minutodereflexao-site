@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/style.css?v=d0985d0">
+<link rel="stylesheet" href="/assets/style.css?v=156f154">
 <script>
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
 var mdrConsent=null;try{mdrConsent=localStorage.getItem('mdr_consent');}catch(e){}
@@ -47,6 +47,7 @@ src="https://www.facebook.com/tr?id=2184221455784624&ev=PageView&noscript=1"
 <!-- End Meta Pixel Code -->
 </head>
 <body>
+<div class="progress-bar" id="progress-bar" aria-hidden="true"></div>
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 <header class="site-header">
   <div class="wrap header-inner">
@@ -66,33 +67,42 @@ src="https://www.facebook.com/tr?id=2184221455784624&ev=PageView&noscript=1"
 <section class="hero">
   <div class="hero-waves" aria-hidden="true"></div>
   <div class="wrap hero-inner">
-    <p class="mono kicker">Encontre sua força interior</p>
-    <h1 class="display">Um minuto para pensar.<br>Uma vida para mudar.</h1>
-    <p class="lead">Reflexões curtas e práticas sobre motivação, propósito, superação e desenvolvimento pessoal, para você seguir em frente, um dia de cada vez.</p>
-    <div class="hero-actions">
-      <a class="btn btn-light" href="/blog/">Ler os artigos</a>
-      <a class="btn btn-ghost" href="https://www.instagram.com/minutodereflexao.comm/" target="_blank" rel="noopener">Seguir no Instagram</a>
+    <div class="hero-grid">
+      <div class="hero-main">
+        <p class="mono kicker hero-anim" style="animation-delay:.05s">Encontre sua força interior</p>
+        <h1 class="display hero-anim" style="animation-delay:.15s">Um minuto para pensar.<br>Uma vida para mudar.</h1>
+        <p class="lead hero-anim" style="animation-delay:.25s">Reflexões curtas e práticas sobre motivação, propósito, superação e desenvolvimento pessoal, para você seguir em frente, um dia de cada vez.</p>
+        <div class="hero-actions hero-anim" style="animation-delay:.35s">
+          <a class="btn btn-light" href="/blog/">Ler os artigos</a>
+          <a class="btn btn-ghost" href="https://www.instagram.com/minutodereflexao.comm/" target="_blank" rel="noopener">Seguir no Instagram</a>
+        </div>
+        <p class="mono hero-handle hero-anim" style="animation-delay:.45s">Minuto de Reflexão @minutodereflexao.comm</p>
+      </div>
+      <div class="hero-feature hero-anim" style="animation-delay:.3s">
+      <p class="mono hero-feature-kicker">Reflexão de hoje</p>
+      <p class="hero-feature-quote">“Toda mudança inesperada também abre um caminho.”</p>
+      <a class="hero-feature-link" href="/blog/como-lidar-com-mudancas-inesperadas/">Como lidar com mudanças inesperadas: 5 passos para se adaptar <span aria-hidden="true">→</span></a>
     </div>
-    <p class="mono hero-handle">Minuto de Reflexão @minutodereflexao.comm</p>
+    </div>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="mono kicker dark">Últimas reflexões</p>
       <h2 class="title">Do blog</h2>
     </div>
-    <div class="grid"><article class="card">
-  <a class="card-cover card-img" href="/blog/como-lidar-com-mudancas-inesperadas/" aria-hidden="true" tabindex="-1"><img src="/assets/artigos/como-lidar-com-mudancas-inesperadas.jpg" alt="" loading="lazy" width="1200" height="630"></a>
-  <div class="card-body">
+    <article class="feature-post reveal">
+  <a class="feature-cover" href="/blog/como-lidar-com-mudancas-inesperadas/" aria-hidden="true" tabindex="-1"><img src="/assets/artigos/como-lidar-com-mudancas-inesperadas.jpg" alt="" loading="lazy" width="1200" height="900"></a>
+  <div class="feature-body">
     <p class="mono meta"><a href="/blog/tema/superacao/">Superação</a> · <time datetime="2026-11-27">27/11/2026</time></p>
-    <h3><a href="/blog/como-lidar-com-mudancas-inesperadas/">Como lidar com mudanças inesperadas: 5 passos para se adaptar</a></h3>
+    <h2><a href="/blog/como-lidar-com-mudancas-inesperadas/">Como lidar com mudanças inesperadas: 5 passos para se adaptar</a></h2>
     <p>Como lidar com mudanças inesperadas sem perder o chão: 5 passos práticos para acolher o susto, retomar o controle e se adaptar com calma.</p>
     <a class="link-arrow" href="/blog/como-lidar-com-mudancas-inesperadas/">Ler artigo <span aria-hidden="true">→</span></a>
   </div>
 </article>
-<article class="card">
+    <div class="grid grid-2 reveal"><article class="card">
   <a class="card-cover card-img" href="/blog/como-descobrir-seus-valores-pessoais/" aria-hidden="true" tabindex="-1"><img src="/assets/artigos/como-descobrir-seus-valores-pessoais.jpg" alt="" loading="lazy" width="1200" height="630"></a>
   <div class="card-body">
     <p class="mono meta"><a href="/blog/tema/proposito/">Propósito</a> · <time datetime="2026-11-25">25/11/2026</time></p>
@@ -116,15 +126,15 @@ src="https://www.facebook.com/tr?id=2184221455784624&ev=PageView&noscript=1"
 
 <section class="section section-mist">
   <div class="wrap pillars">
-    <div class="section-head">
+    <div class="section-head reveal">
       <p class="mono kicker dark">Sobre o que falamos</p>
       <h2 class="title">Quatro caminhos para evoluir</h2>
     </div>
-    <div class="pillar-grid">
-      <div class="pillar"><span class="mono">01</span><h3>Motivação</h3><p>Como começar, e principalmente como continuar quando a vontade some.</p></div>
-      <div class="pillar"><span class="mono">02</span><h3>Propósito</h3><p>Encontrar direção e sentido mesmo quando tudo parece confuso.</p></div>
-      <div class="pillar"><span class="mono">03</span><h3>Superação</h3><p>Levantar depois das quedas e transformar dor em aprendizado.</p></div>
-      <div class="pillar"><span class="mono">04</span><h3>Desenvolvimento pessoal</h3><p>Pequenos ajustes diários que mudam quem você é ao longo do tempo.</p></div>
+    <div class="path-list reveal">
+      <a class="path-row" href="/blog/tema/motivacao/"><span class="path-mark" aria-hidden="true">M</span><span class="path-text"><h3>Motivação</h3><p>Como começar, e principalmente como continuar quando a vontade some.</p></span><span class="path-arrow" aria-hidden="true">→</span></a>
+      <a class="path-row" href="/blog/tema/proposito/"><span class="path-mark" aria-hidden="true">P</span><span class="path-text"><h3>Propósito</h3><p>Encontrar direção e sentido mesmo quando tudo parece confuso.</p></span><span class="path-arrow" aria-hidden="true">→</span></a>
+      <a class="path-row" href="/blog/tema/superacao/"><span class="path-mark" aria-hidden="true">S</span><span class="path-text"><h3>Superação</h3><p>Levantar depois das quedas e transformar dor em aprendizado.</p></span><span class="path-arrow" aria-hidden="true">→</span></a>
+      <a class="path-row" href="/blog/tema/desenvolvimento-pessoal/"><span class="path-mark" aria-hidden="true">D</span><span class="path-text"><h3>Desenvolvimento pessoal</h3><p>Pequenos ajustes diários que mudam quem você é ao longo do tempo.</p></span><span class="path-arrow" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
@@ -159,7 +169,7 @@ src="https://www.facebook.com/tr?id=2184221455784624&ev=PageView&noscript=1"
 </section>
 
 <section class="section">
-  <div class="wrap community">
+  <div class="wrap community reveal">
     <p class="mono kicker dark">Reflexão do dia</p>
     <p class="big-quote">“Não espere a motivação. Comece, e ela aparece no caminho.”</p>
     <p>Todos os dias tem uma reflexão nova no nosso Instagram e no canal do YouTube. Venha fazer parte.</p>
@@ -212,6 +222,33 @@ if(window.gtag)gtag('event','begin_checkout',{items:[{item_name:n}]});});})();
 <script>
 (function(){var b=document.querySelector('.menu-toggle'),n=document.getElementById('menu');
 if(!b)return;b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o);});})();
+</script>
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var els=document.querySelectorAll('.reveal');
+  if(!els.length)return;
+  if(reduce||!('IntersectionObserver' in window)){els.forEach(function(el){el.classList.add('is-visible');});return;}
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-visible');io.unobserve(e.target);}});
+  },{threshold:0,rootMargin:'0px 0px -60px 0px'});
+  els.forEach(function(el){io.observe(el);});
+})();
+</script>
+<script>
+(function(){
+  var bar=document.getElementById('progress-bar'),post=document.querySelector('.post-body');
+  if(!bar||!post)return;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  bar.hidden=false;
+  function upd(){
+    var start=post.offsetTop,total=post.offsetHeight-(window.innerHeight*.5);
+    var pct=total>0?Math.min(100,Math.max(0,((window.scrollY-start+window.innerHeight)/total)*100)):0;
+    bar.style.width=pct+'%';
+  }
+  if(reduce){bar.style.transition='none';}
+  upd();window.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);
+})();
 </script>
 </body>
 </html>
